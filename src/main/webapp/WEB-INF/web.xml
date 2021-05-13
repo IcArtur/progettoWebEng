@@ -1,0 +1,58 @@
+<web-app version="2.5" 
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://JAVA.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    
+ 
+    <context-param>
+        <param-name>jdbcURL</param-name>
+        <param-value>jdbc:mysql://127.0.0.1:3306/guidatv</param-value>
+    </context-param>
+ 
+    <context-param>
+        <param-name>jdbcUsername</param-name>
+        <param-value>artur</param-value>
+    </context-param>
+ 
+    <context-param>
+        <param-name>jdbcPassword</param-name>
+        <param-value>Arturho22</param-value>
+    </context-param>
+ 
+    <servlet>
+        <servlet-name>ControllerServlet</servlet-name>
+        <servlet-class>com.guida.ControllerServlet</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>ControllerServlet</servlet-name>
+        <url-pattern>/admin/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SchedaControllerServlet</servlet-name>
+        <servlet-class>com.guida.SchedaControllerServlet</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>SchedaControllerServlet</servlet-name>
+        <url-pattern>/scheda/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>CanaleControllerServlet</servlet-name>
+        <servlet-class>com.guida.CanaleControllerServlet</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>CanaleControllerServlet</servlet-name>
+        <url-pattern>/canale/*</url-pattern>
+    </servlet-mapping>
+ 
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/error.jsp</location>
+    </error-page>
+</web-app>
+
+

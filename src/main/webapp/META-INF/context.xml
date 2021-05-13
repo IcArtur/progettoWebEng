@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+	<Resource name="jdbc/guidatv" auth="Container"
+		type="javax.sql.DataSource" username="artur" password="Arturho22"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://127.0.0.1:3306/guidatv" maxActive="15" maxIdle="3" />
+</Context>
