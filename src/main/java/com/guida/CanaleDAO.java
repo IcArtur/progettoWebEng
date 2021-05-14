@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,6 +127,54 @@ public class CanaleDAO {
         statement.close();
          
         return canale;
+    }
+    
+    public List<Programma> listOrariGiornalieri(int id) throws SQLException {
+        List<Programma> listOrariGiornalieri = new ArrayList<>();
+
+        String sql = "select op.*, p.*, c.* from orari_programma as op "
+	        		+ "join programma p on p.id = op.id_programma "
+	        		+ "join canale c on c.id = op.id_canale "
+	        		+ "WHERE op.id_canale = ? "
+	        		+ "AND date(op.data_inizio) = date(now())";
+        connect();
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setInt (1, id);
+        statement.toString();
+        ResultSet resultSet = statement.executeQuery();
+        
+        while (resultSet.next()) {
+            String nome = resultSet.getString("nome");
+            String descrizione = resultSet.getString("descrizione");
+            String genere = resultSet.getString("genere");
+            String link_scheda = resultSet.getString("link_scheda");
+            String link_immagine = resultSet.getString("link_immagine");
+            String nome_canale = resultSet.getString("c.nome");
+            int isTvShowInt = resultSet.getInt("isTvShow");
+            boolean isTvShow;
+            if (isTvShowInt == 1) {
+            	isTvShow = true;
+            }
+            else {
+            	isTvShow = false;
+            }
+            int numero_stagione = resultSet.getInt("numero_stagione");
+            int numero_episodio = resultSet.getInt("numero_episodio");
+            int id_canale = resultSet.getInt("id_canale");
+            int id_orario = resultSet.getInt("id");
+            Timestamp data_inizio = resultSet.getTimestamp("data_inizio");
+            Timestamp data_fine = resultSet.getTimestamp("data_fine");
+            Programma programma = new Programma(id, nome, descrizione, genere, link_scheda, link_immagine, isTvShow, numero_stagione, numero_episodio, id_canale, nome_canale, id_orario, data_inizio, data_fine);
+            listOrariGiornalieri.add(programma);
+    	}
+        
+         
+        resultSet.close();
+        statement.close();
+         
+        disconnect();
+         
+        return listOrariGiornalieri;
     }
 }
 

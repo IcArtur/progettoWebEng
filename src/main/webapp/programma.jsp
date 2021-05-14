@@ -6,13 +6,13 @@
 
 
 <c:set  var="bodyContent">
-	<style type="text/css">@import url("/guidatv/css/programma.css");</style>
+	<style type="text/css">@import url("/guidatv/css/scheda.css");</style>
 
     <center>
         <h1>Scheda <c:out value="${programma.nome}" /></h1>
     </center>
-    <div class="programma-container">
-	    <div align="center" class="scheda-programma">
+    <div class="scheda-container">
+	    <div align="center" class="scheda-singola">
 	    	<div class="scheda-bg">
 				<img src="<c:out value="${programma.link_immagine}" />" alt="<c:out value="${programma.nome}" />">
 				<h2>Nome programma:</h2>
@@ -44,11 +44,11 @@
 					%>
 		    	<h2>Link Scheda Wikipedia:</h2>
 		    	<c:out value="${programma.descrizione}" />
-		    	<br><br><br><br><br><br>
+		    	<br><br><br>
 		    	
 		    	
 		        <table border="1" cellpadding="5">
-		            <caption>Programmazione</caption>
+		            <caption>Programmazione<br></caption>
 		            <tr>
 		                <th>Canale</th>
 		                <th>Inizio</th>

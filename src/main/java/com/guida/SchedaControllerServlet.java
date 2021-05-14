@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SchedaControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProgrammaDAO programmaDAO;
+    private CanaleDAO canaleDAO;
  
     public void init() {
         String jdbcURL = getServletContext().getInitParameter("jdbcURL");
@@ -21,6 +22,7 @@ public class SchedaControllerServlet extends HttpServlet {
         String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
  
         programmaDAO = new ProgrammaDAO(jdbcURL, jdbcUsername, jdbcPassword);
+        canaleDAO = new CanaleDAO(jdbcURL, jdbcUsername, jdbcPassword);
  
     }
  
@@ -37,6 +39,9 @@ public class SchedaControllerServlet extends HttpServlet {
             switch (action) {
             case "/programma":
                 listOrari(request, response);
+                break;
+            case "/canale":
+                listOrariGiornalieri(request, response);
                 break;
             default:
             	listOrari(request, response);
@@ -55,6 +60,17 @@ public class SchedaControllerServlet extends HttpServlet {
         request.setAttribute("listOrari", listProgramma);
         request.setAttribute("programma", existingProgramma);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/programma.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void listOrariGiornalieri(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+    	int id = Integer.parseInt(request.getParameter("id"));
+        List<Programma> listOrariGiornalieri = canaleDAO.listOrariGiornalieri(id);
+        Canale existingCanale = canaleDAO.getCanale(id);
+        request.setAttribute("listOrariGiornalieri", listOrariGiornalieri);
+        request.setAttribute("canale", existingCanale);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/canale.jsp");
         dispatcher.forward(request, response);
     }
 
