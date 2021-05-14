@@ -25,21 +25,11 @@
       <div class="fl_right"> 
         <!-- ################################################################################################ -->
         <ul class="nospace">
-          <li><a href="/guidatv/homepage.jsp"><i class="fas fa-home"></i></a></li>
-          <li><a href="#" title="Help Centre"><i class="far fa-life-ring"></i></a></li>
-          <li><a href="#" title="Login"><i class="fas fa-sign-in-alt"></i></a></li>
-          <li><a href="#" title="Sign Up"><i class="fas fa-edit"></i></a></li>
-          <li id="searchform">
-            <div>
-              <form action="#" method="post">
-                <fieldset>
-                  <legend>Quick Search:</legend>
-                  <input type="text" placeholder="Enter search term&hellip;">
-                  <button type="submit"><i class="fas fa-search"></i></button>
-                </fieldset>
-              </form>
-            </div>
-          </li>
+          <li><a href="/guidatv/homepage.jsp" title="Home"><i class="fas fa-home"></i></a></li>
+          <li><a href="/guidatv/login.html" title="Login"><i class="fas fa-sign-in-alt"></i></a></li>
+          <li><a href="/guidatv/registrazione.html" title="Registrati"><i class="fas fa-edit"></i></a></li>
+          <li><a href="/guidatv/profilo.jsp" title="Profilo"><i class="fas fa-user"></i></a></li>
+          <li><a href="/guidatv/login.html" title="Logout"><i class="fas fa-sign-out-alt"></i></a></li>
         </ul>
         <!-- ################################################################################################ -->
       </div>

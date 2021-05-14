@@ -20,13 +20,13 @@
     </context-param>
  
     <servlet>
-        <servlet-name>ControllerServlet</servlet-name>
-        <servlet-class>com.guida.ControllerServlet</servlet-class>
+        <servlet-name>ProgrammaControllerServlet</servlet-name>
+        <servlet-class>com.guida.ProgrammaControllerServlet</servlet-class>
     </servlet>
  
     <servlet-mapping>
-        <servlet-name>ControllerServlet</servlet-name>
-        <url-pattern>/admin/*</url-pattern>
+        <servlet-name>ProgrammaControllerServlet</servlet-name>
+        <url-pattern>/admin/programma/*</url-pattern>
     </servlet-mapping>
     
     <servlet>
@@ -46,7 +46,7 @@
  
     <servlet-mapping>
         <servlet-name>CanaleControllerServlet</servlet-name>
-        <url-pattern>/canale/*</url-pattern>
+        <url-pattern>/admin/canale/*</url-pattern>
     </servlet-mapping>
  
     <error-page>

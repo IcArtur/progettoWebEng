@@ -8,17 +8,27 @@
 
 
 <c:set var="bodyContent">
+	<%
+		if(session.getAttribute("user")==null){
+			response.sendRedirect("/guidatv/login.html");
+		}
+		else if ( ( (Boolean) session.getAttribute("isAdmin") ).booleanValue() != true )
+		{
+			response.sendRedirect("/guidatv/login.html");
+		}
+	%>
 	<style type="text/css">@import url("/guidatv/css/admin.css");</style>
 	<div align="center">
-		<h1>Modifica Programmi</h1>
-		<div class="menu">
-			<a href="/guidatv/admin/new"><button type="button">Aggiungi
-					programma</button></a> &nbsp;&nbsp;&nbsp; <a href="/guidatv/admin/list"><button
-					type="button">Lista Programma</button></a> &nbsp;&nbsp;&nbsp; <a
-				href="/guidatv/canale/new"><button type="button">Aggiungi
-					Canale</button></a> &nbsp;&nbsp;&nbsp; <a href="/guidatv/canale/list"><button
-					type="button">Lista Canali</button></a>
-		</div>
+        <h1>Modifica Programma</h1>
+        <div class="menu">
+	        <a href="/guidatv/admin/programma/new"><button type="button">Aggiungi programma</button></a>
+	        &nbsp;&nbsp;&nbsp;
+	        <a href="/guidatv/admin/programma/list"><button type="button">Lista Programma</button></a>
+	        &nbsp;&nbsp;&nbsp;
+	        <a href="/guidatv/admin/canale/new"><button type="button">Aggiungi Canale</button></a>
+	        &nbsp;&nbsp;&nbsp;
+	        <a href="/guidatv/admin/canale/list"><button type="button">Lista Canali</button></a>
+        </div>
 	</div>
 	<div align="center">
 		<c:if test="${programma != null}">
@@ -122,8 +132,8 @@
 			</tr>
 
 			<tr>
-				<td colspan="2" align="center"><input type="submit"
-					value="Salva" /></td>
+				<td colspan="2" align="center">
+				<input type="submit" value="Salva" /></td>
 			</tr>
 		</table>
 		<input name="id_orario" type="hidden"

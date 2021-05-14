@@ -17,4 +17,5 @@
 table {
 	width:auto;
 	border-collapse: separate;
+	max-width:90%;
 }

@@ -5,18 +5,27 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page import="java.sql.*" %>
 
-<t:menu>
+<c:set var="bodyContent">
+	<%
+		if(session.getAttribute("user")==null){
+			response.sendRedirect("/guidatv/login.html");
+		}
+		else if ( ( (Boolean) session.getAttribute("isAdmin") ).booleanValue() != true )
+		{
+			response.sendRedirect("/guidatv/login.html");
+		}
+	%>
 <style type="text/css">@import url("/guidatv/css/admin.css");</style>
 <div align="center">
-        <h1>Modifica Canali</h1>
+        <h1>Modifica Canale</h1>
         <div class="menu">
-	        <a href="/guidatv/admin/new"><button type="button">Aggiungi programma</button></a>
+	        <a href="/guidatv/admin/programma/new"><button type="button">Aggiungi programma</button></a>
 	        &nbsp;&nbsp;&nbsp;
-	        <a href="/guidatv/admin/list"><button type="button">Lista Programma</button></a>
+	        <a href="/guidatv/admin/programma/list"><button type="button">Lista Programma</button></a>
 	        &nbsp;&nbsp;&nbsp;
-	        <a href="/guidatv/canale/new"><button type="button">Aggiungi Canale</button></a>
+	        <a href="/guidatv/admin/canale/new"><button type="button">Aggiungi Canale</button></a>
 	        &nbsp;&nbsp;&nbsp;
-	        <a href="/guidatv/canale/list"><button type="button">Lista Canali</button></a>
+	        <a href="/guidatv/admin/canale/list"><button type="button">Lista Canali</button></a>
         </div>
 </div>
     <div align="center">
@@ -51,7 +60,7 @@
             <tr>
                 <th>Immagine: </th>
                 <td>
-                    <input type="text" name="descrizione" size="45"
+                    <input type="text" name="immagine" size="45"
                             value="<c:out value='${canale.immagine}' />"
                         />
                 </td>
@@ -68,4 +77,9 @@
                         />
         </form>
     </div>   
+</c:set>
+<t:menu>
+	<jsp:body>
+	    ${bodyContent}
+	</jsp:body>
 </t:menu>

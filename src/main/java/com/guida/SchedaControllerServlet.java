@@ -43,9 +43,6 @@ public class SchedaControllerServlet extends HttpServlet {
             case "/canale":
                 listOrariGiornalieri(request, response);
                 break;
-            default:
-            	listOrari(request, response);
-                break;
             }
         } catch (SQLException ex) {
             throw new ServletException(ex);

@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * requests from the user.
  * @author www.codejava.net
  */
-public class ControllerServlet extends HttpServlet {
+public class ProgrammaControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProgrammaDAO programmaDAO;
  
@@ -167,9 +167,9 @@ public class ControllerServlet extends HttpServlet {
 		}
 		String link_scheda=request.getParameter("link_scheda");
 		String link_immagine=request.getParameter("link_immagine");
-		String String_data_inizio=request.getParameter("data_inizio").replace('T', ' ')+":00";
+		String String_data_inizio=request.getParameter("data_inizio").replace('T', ' ');
 		Timestamp data_inizio = Timestamp.valueOf(String_data_inizio);
-		String String_data_fine=request.getParameter("data_fine").replace('T', ' ')+":00";
+		String String_data_fine=request.getParameter("data_fine").replace('T', ' ');
 		Timestamp data_fine = Timestamp.valueOf(String_data_fine);
 		int id_canale=Integer.parseInt(request.getParameter("id_canale"));
 		int id_orario=Integer.parseInt(request.getParameter("id_orario"));

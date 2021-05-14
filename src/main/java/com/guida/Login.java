@@ -52,6 +52,9 @@ public class Login extends HttpServlet{
 				if (rs.getInt(7) == 1) {
 					isAdmin = true;
 				}
+				else {
+					isAdmin = false;
+				}
 				out.println(dbName);
 				out.println(dbPassword);
 				
@@ -64,10 +67,12 @@ public class Login extends HttpServlet{
 				//Impostare qui tutte le variabili necessarie per la SESSIONE
 				
 				HttpSession session = request.getSession();
+				
 				session.setAttribute("user", name);
 				session.setAttribute("pass", dbPassword);
+				session.setAttribute("isAdmin", isAdmin);
 				if (isAdmin) {
-					response.sendRedirect("admin/list");
+					response.sendRedirect("admin/programma/list");
 				}
 				else {
 				 response.sendRedirect("homepage.jsp");

@@ -49,7 +49,6 @@ public class CanaleDAO {
 		statement2.setString (2, canale.immagine);
 		boolean rowInserted = statement2.executeUpdate() > 0;
 		
-        disconnect();
         return rowInserted;
     }
      
@@ -71,8 +70,7 @@ public class CanaleDAO {
                 listCanale.add(canale);
         }
         statement.close();
-         
-        disconnect();
+        
          
         return listCanale;
     }
@@ -87,7 +85,7 @@ public class CanaleDAO {
          
         boolean rowDeleted = statement.executeUpdate() > 0;
         statement.close();
-        disconnect();
+
         return rowDeleted;     
     }
      
@@ -100,10 +98,11 @@ public class CanaleDAO {
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setString (1, canale.getNome());
 		statement.setString (2, canale.getImmagine());
+		statement.setInt (3, canale.getId());
         
         boolean rowUpdated = statement.executeUpdate() > 0;
         statement.close();
-        disconnect();
+
         return rowUpdated;     
     }
      
@@ -140,7 +139,6 @@ public class CanaleDAO {
         connect();
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setInt (1, id);
-        statement.toString();
         ResultSet resultSet = statement.executeQuery();
         
         while (resultSet.next()) {
@@ -172,7 +170,7 @@ public class CanaleDAO {
         resultSet.close();
         statement.close();
          
-        disconnect();
+
          
         return listOrariGiornalieri;
     }
