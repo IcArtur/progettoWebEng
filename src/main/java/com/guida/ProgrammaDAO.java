@@ -85,43 +85,36 @@ public class ProgrammaDAO {
     public List<Programma> listAllProgramma() throws SQLException {
         List<Programma> listProgramma = new ArrayList<>();
          
-        String sql = "SELECT * FROM guidatv.orari_programma";
-        String sql2 = "SELECT * FROM guidatv.programma WHERE id=?";
+        String sql = "select op.*, p.* from orari_programma as op "
+        		+ "join programma p on p.id = op.id_programma";
          
         connect();
         
         Statement statement = jdbcConnection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-         
-        while (resultSet.next()) {
-        	PreparedStatement statement2 = jdbcConnection.prepareStatement(sql2);
-        	statement2.setInt (1, resultSet.getInt("id_programma"));
-        	ResultSet resultSet2 = statement2.executeQuery();
-        	while (resultSet2.next()) {
-        		int id = resultSet2.getInt("id");
-                String nome = resultSet2.getString("nome");
-                String descrizione = resultSet2.getString("descrizione");
-                String genere = resultSet2.getString("genere");
-                String link_scheda = resultSet2.getString("link_scheda");
-                String link_immagine = resultSet2.getString("link_immagine");
-                int isTvShowInt = resultSet2.getInt("isTvShow");
-                boolean isTvShow;
-                if (isTvShowInt == 1) {
-                	isTvShow = true;
-                }
-                else {
-                	isTvShow = false;
-                }
-                int numero_stagione = resultSet2.getInt("numero_stagione");
-                int numero_episodio = resultSet2.getInt("numero_episodio");
-                int id_canale = resultSet.getInt("id_canale");
-                int id_orario = resultSet.getInt("id");
-                Timestamp data_inizio = resultSet.getTimestamp("data_inizio");
-                Timestamp data_fine = resultSet.getTimestamp("data_fine");
-                Programma programma = new Programma(id, nome, descrizione, genere, link_scheda, link_immagine, isTvShow, numero_stagione, numero_episodio, id_canale, id_orario, data_inizio, data_fine);
-                listProgramma.add(programma);
-        	}
-            
+    	while (resultSet.next()) {
+    		int id = resultSet.getInt("p.id");
+            String nome = resultSet.getString("nome");
+            String descrizione = resultSet.getString("descrizione");
+            String genere = resultSet.getString("genere");
+            String link_scheda = resultSet.getString("link_scheda");
+            String link_immagine = resultSet.getString("link_immagine");
+            int isTvShowInt = resultSet.getInt("isTvShow");
+            boolean isTvShow;
+            if (isTvShowInt == 1) {
+            	isTvShow = true;
+            }
+            else {
+            	isTvShow = false;
+            }
+            int numero_stagione = resultSet.getInt("numero_stagione");
+            int numero_episodio = resultSet.getInt("numero_episodio");
+            int id_canale = resultSet.getInt("id_canale");
+            int id_orario = resultSet.getInt("op.id");
+            Timestamp data_inizio = resultSet.getTimestamp("data_inizio");
+            Timestamp data_fine = resultSet.getTimestamp("data_fine");
+            Programma programma = new Programma(id, nome, descrizione, genere, link_scheda, link_immagine, isTvShow, numero_stagione, numero_episodio, id_canale, id_orario, data_inizio, data_fine);
+            listProgramma.add(programma);
         }
          
         resultSet.close();
@@ -194,16 +187,20 @@ public class ProgrammaDAO {
     }
      
     public boolean updateProgramma(Programma programma) throws SQLException {
-        String sql = "UPDATE guidatv.programma SET nome = ?, descrizione = ?, genere = ?, link_scheda = ?, link_immagine = ?, isTvShow = ?, numero_stagione = ?, numero_episodio = ?";
-        sql += " WHERE id = ?";
-        String sql2 = "UPDATE guidatv.orari_programma SET data_inizio = ?, data_fine= ?, id_canale = ?";
-        sql2 += " WHERE id = ?";
+    	String join_sql = "UPDATE programma as p "
+    			+ "join orari_programma as op  ON p.id = op.id_programma "
+    			+ "SET nome = ?, descrizione = ?, genere = ?, link_scheda = ?, link_immagine = ?, isTvShow = ?, numero_stagione = ?, numero_episodio = ?, data_inizio = ?, data_fine= ?, id_canale = ? "
+    			+ "WHERE op.id=? ";
+    	
+//        String sql = "UPDATE guidatv.programma SET nome = ?, descrizione = ?, genere = ?, link_scheda = ?, link_immagine = ?, isTvShow = ?, numero_stagione = ?, numero_episodio = ?";
+//        sql += " WHERE id = ?";
+//        String sql2 = "UPDATE guidatv.orari_programma SET data_inizio = ?, data_fine= ?, id_canale = ?";
+//        sql2 += " WHERE id = ?";
         
         connect();
         
         
-        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        PreparedStatement statement2 = jdbcConnection.prepareStatement(sql2);
+        PreparedStatement statement = jdbcConnection.prepareStatement(join_sql);
         statement.setString (1, programma.getNome());
 		statement.setString (2, programma.getDescrizione());
 		statement.setString (3, programma.getGenere());
@@ -212,16 +209,15 @@ public class ProgrammaDAO {
 		statement.setBoolean (6, programma.getIsTvShow());
 		statement.setInt (7, programma.getnumero_stagione());
 		statement.setInt (8, programma.getnumero_episodio());
-        statement.setInt(9, programma.getId());
+        statement.setTimestamp(9, programma.getdata_inizio());
+        statement.setTimestamp(10, programma.getdata_fine());
+        statement.setInt(11, programma.getId_canale());
+        statement.setInt(12, programma.getId_orario());
+        
         statement.toString();
-        statement2.setTimestamp(1, programma.getdata_inizio());
-        statement2.setTimestamp(2, programma.getdata_fine());
-        statement2.setInt(3, programma.getId_canale());
-        statement2.setInt(4, programma.getId_orario());
         
          
         boolean rowUpdated = statement.executeUpdate() > 0;
-        boolean rowUpdated2 = statement2.executeUpdate() > 0;
         statement.close();
         disconnect();
         return rowUpdated;     

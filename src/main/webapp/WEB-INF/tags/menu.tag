@@ -25,7 +25,7 @@
       <div class="fl_right"> 
         <!-- ################################################################################################ -->
         <ul class="nospace">
-          <li><a href="index.html"><i class="fas fa-home"></i></a></li>
+          <li><a href="/guidatv/homepage.jsp"><i class="fas fa-home"></i></a></li>
           <li><a href="#" title="Help Centre"><i class="far fa-life-ring"></i></a></li>
           <li><a href="#" title="Login"><i class="fas fa-sign-in-alt"></i></a></li>
           <li><a href="#" title="Sign Up"><i class="fas fa-edit"></i></a></li>
@@ -56,8 +56,8 @@
       <nav id="mainav" class="fl_right"> 
         <!-- ################################################################################################ -->
         <ul class="clear">
-          <li class="active"><a href="index.html">Home</a></li>
-          <li><a class="drop" href="#">Homepage</a>
+          <li class="active"><a href="/guidatv/homepage.jsp">Home</a></li>
+          <li><a class="drop" href="/guidatv/homepage.jsp">Homepage</a>
             <ul>
               <li><a href="pages/gallery.html">Non</a></li>
               <li><a href="pages/full-width.html">Saprei</a></li>
