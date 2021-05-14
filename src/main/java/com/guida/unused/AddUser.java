@@ -12,6 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/addUser")
 public class AddUser extends HttpServlet{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public AddUser() {
 		super();
 	}

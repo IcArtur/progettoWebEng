@@ -27,7 +27,7 @@
 	        </div>
 	</div>
     <div align="center">
-        <table border="1" cellpadding="5">
+        <table border="1">
             <tr>
                 <th>ID</th>
                 <th>Nome</th>

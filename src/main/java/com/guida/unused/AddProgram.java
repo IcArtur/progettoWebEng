@@ -3,20 +3,20 @@ package com.guida.unused;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 
 @WebServlet("/addProgram")
 public class AddProgram extends HttpServlet{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public AddProgram() {
 		super();
 	}
@@ -77,7 +77,7 @@ public class AddProgram extends HttpServlet{
 				statement.setString (6, num_episodio);
 				statement.setString (7, link_scheda);
 				statement.setString (8, link_immagine);
-				int affected_rows = statement.executeUpdate();
+				statement.executeUpdate();
 				try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
 		            if (generatedKeys.next()) {
 		                idProgram = generatedKeys.getLong(1);	                

@@ -1,4 +1,6 @@
-package com.guida;
+package com.guida.Servlets;
+
+import com.guida.Model.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -45,8 +47,8 @@ public class CanaleDAO {
         
 		String query = "INSERT INTO guidatv.canale (nome, immagine) VALUES (?, ?, ?, ?);";
 		PreparedStatement statement2 = jdbcConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-		statement2.setString (1, canale.nome);
-		statement2.setString (2, canale.immagine);
+		statement2.setString (1, canale.getNome());
+		statement2.setString (2, canale.getImmagine());
 		boolean rowInserted = statement2.executeUpdate() > 0;
 		
         return rowInserted;

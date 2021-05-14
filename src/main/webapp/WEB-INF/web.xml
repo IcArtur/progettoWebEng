@@ -21,7 +21,7 @@
  
     <servlet>
         <servlet-name>ProgrammaControllerServlet</servlet-name>
-        <servlet-class>com.guida.ProgrammaControllerServlet</servlet-class>
+        <servlet-class>com.guida.ControllerServlets.ProgrammaControllerServlet</servlet-class>
     </servlet>
  
     <servlet-mapping>
@@ -31,7 +31,7 @@
     
     <servlet>
         <servlet-name>SchedaControllerServlet</servlet-name>
-        <servlet-class>com.guida.SchedaControllerServlet</servlet-class>
+        <servlet-class>com.guida.ControllerServlets.SchedaControllerServlet</servlet-class>
     </servlet>
  
     <servlet-mapping>
@@ -41,7 +41,7 @@
     
     <servlet>
         <servlet-name>CanaleControllerServlet</servlet-name>
-        <servlet-class>com.guida.CanaleControllerServlet</servlet-class>
+        <servlet-class>com.guida.ControllerServlets.CanaleControllerServlet</servlet-class>
     </servlet>
  
     <servlet-mapping>

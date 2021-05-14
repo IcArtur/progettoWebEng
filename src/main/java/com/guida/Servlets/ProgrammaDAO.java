@@ -1,5 +1,6 @@
-package com.guida;
+package com.guida.Servlets;
 
+import com.guida.Model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -43,7 +44,7 @@ public class ProgrammaDAO {
     public boolean insertProgramma(Programma programma) throws SQLException {
     	connect();
     	PreparedStatement checkstatement = jdbcConnection.prepareStatement("SELECT * from guidatv.programma WHERE nome = ?");
-		checkstatement.setString (1, programma.nome);
+		checkstatement.setString (1, programma.getNome());
 		ResultSet rs = checkstatement.executeQuery();
 		Long idProgram = (long) 0;
 		
@@ -53,14 +54,14 @@ public class ProgrammaDAO {
 		else {
 			String query = "INSERT INTO guidatv.programma (nome, descrizione, genere, isTvShow, numero_stagione, numero_episodio, link_scheda, link_immagine) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 			PreparedStatement statement = jdbcConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			statement.setString (1, programma.nome);
-			statement.setString (2, programma.descrizione);
-			statement.setString (3, programma.genere);
-			statement.setBoolean (4, programma.isTvShow);
-			statement.setInt (5, programma.numero_stagione);
-			statement.setInt (6, programma.numero_episodio);
-			statement.setString (7, programma.link_scheda);
-			statement.setString (8, programma.link_immagine);
+			statement.setString (1, programma.getNome());
+			statement.setString (2, programma.getDescrizione());
+			statement.setString (3, programma.getGenere());
+			statement.setBoolean (4, programma.getIsTvShow());
+			statement.setInt (5, programma.getnumero_stagione());
+			statement.setInt (6, programma.getnumero_episodio());
+			statement.setString (7, programma.getlink_scheda());
+			statement.setString (8, programma.getlink_immagine());
 			statement.executeUpdate();
 			try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
 	            if (generatedKeys.next()) {
@@ -71,9 +72,9 @@ public class ProgrammaDAO {
         
 		String query2 = "INSERT INTO guidatv.orari_programma (data_inizio, data_fine, id_canale, id_programma) VALUES (?, ?, ?, ?);";
 		PreparedStatement statement2 = jdbcConnection.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
-		statement2.setTimestamp (1, programma.data_inizio);
-		statement2.setTimestamp (2, programma.data_fine);
-		statement2.setInt (3, programma.id_canale);
+		statement2.setTimestamp (1, programma.getdata_inizio());
+		statement2.setTimestamp (2, programma.getdata_fine());
+		statement2.setInt (3, programma.getId_canale());
 		statement2.setLong (4, idProgram);
 		statement2.toString();
 		boolean rowInserted = statement2.executeUpdate() > 0;

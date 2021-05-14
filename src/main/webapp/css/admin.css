@@ -19,3 +19,7 @@ table {
 	border-collapse: separate;
 	max-width:90%;
 }
+
+th, td {
+	padding: 5px;
+}

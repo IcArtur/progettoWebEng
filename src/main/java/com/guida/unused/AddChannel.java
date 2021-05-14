@@ -12,6 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/addChannel")
 public class AddChannel extends HttpServlet{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public AddChannel() {
 		super();
 	}

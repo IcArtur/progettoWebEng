@@ -1,4 +1,4 @@
-package com.guida;
+package com.guida.Model;
 
 import java.sql.Timestamp;
 

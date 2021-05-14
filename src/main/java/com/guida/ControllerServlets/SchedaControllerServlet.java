@@ -1,5 +1,7 @@
-package com.guida;
+package com.guida.ControllerServlets;
 
+import com.guida.Model.*;
+import com.guida.Servlets.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;

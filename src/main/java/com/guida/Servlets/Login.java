@@ -1,4 +1,4 @@
-package com.guida;
+package com.guida.Servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,8 +15,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
+
+@SuppressWarnings("unused")
 @WebServlet("/Login")
 public class Login extends HttpServlet{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public Login() {
 		
@@ -24,7 +31,7 @@ public class Login extends HttpServlet{
 		
 	}
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 
 		try {

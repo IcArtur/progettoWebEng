@@ -1,4 +1,5 @@
-package com.guida;
+package com.guida.Model;
+
 
 
 public class Canale {

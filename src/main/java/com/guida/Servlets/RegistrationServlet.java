@@ -1,13 +1,10 @@
-package com.guida;
+package com.guida.Servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,6 +16,12 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/RegistrationServlet")
 public class RegistrationServlet extends HttpServlet 
 {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 
 	public RegistrationServlet() {
 		
@@ -49,7 +52,6 @@ public class RegistrationServlet extends HttpServlet
 			pst.setString(2, password);
 			pst.setString(3, email);
 			pst.executeUpdate();
-			PrintWriter out = response.getWriter();
 			
 			if(username != null && password!= null) {
 			
