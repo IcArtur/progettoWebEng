@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpSession;
 
 
 @SuppressWarnings("unused")
-@WebServlet("/Login")
 public class Login extends HttpServlet{
 
 	/**

@@ -130,7 +130,8 @@ public class ProgrammaDAO {
         String sql = "select op.*, p.*, c.* from orari_programma as op "
 	        		+ "join programma p on p.id = op.id_programma "
 	        		+ "join canale c on c.id = op.id_canale "
-	        		+ "WHERE op.id_programma = ?";
+	        		+ "WHERE op.id_programma = ?"
+	        		+ " AND op.data_inizio > CURRENT_TIMESTAMP()";
         connect();
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setInt (1, id);
@@ -217,7 +218,7 @@ public class ProgrammaDAO {
         Programma programma = null;
         String join  = "select op.*, p.* from orari_programma as op "
         		     + "join programma p on p.id = op.id_programma "
-        		     + "WHERE op.id_programma = ?";
+        		     + "WHERE op.id = ?";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(join);
