@@ -4,6 +4,8 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page import="com.guida.Model.Utente"%>
 <%@ page import="java.sql.*" %>
+<%@ page import="com.guida.Model.Programma"%>
+
 
 
 
@@ -45,6 +47,7 @@
 		<div class="filter">
 			<span>Canale:</span>
 			<select name="id_canale">
+				<option value="">------</option>
 			<%
 					try {
 						Class.forName("com.mysql.jdbc.Driver");
@@ -59,8 +62,7 @@
 						}
 					} catch (Exception e) {
 						
-					}
-				%>
+					} %>
 			</select>
 		</div>
 		
@@ -86,7 +88,25 @@
                     <td><c:out value="${programma.nome}" /></td>
                     <td><c:out value="${programma.descrizione}" /></td>
                     <td><c:out value="${programma.genere}" /></td>
-                    <td><c:out value="${programma.isTvShow}" /></td>
+                    <td>
+                    <%
+						try {
+							Programma newProgramma = (Programma) pageContext.getAttribute("programma");
+							if (newProgramma.getIsTvShow() == true) {
+								%>
+								Serie TV
+								<%
+							}
+							else {
+								%>
+								Film
+								<%
+							}
+						} catch (Exception e) {
+							
+						}
+					%>
+                    </td>
                     <td><c:out value="${programma.numero_stagione}" /></td>
                     <td><c:out value="${programma.numero_episodio}" /></td>
                     <td><c:out value="${programma.data_inizio}" /></td>

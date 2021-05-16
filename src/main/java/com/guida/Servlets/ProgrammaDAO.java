@@ -1,6 +1,9 @@
 package com.guida.Servlets;
 
 import com.guida.Model.*;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -287,6 +292,73 @@ public class ProgrammaDAO {
         statement.close();
          
         return programma;
+    }
+    public List<Programma> ricercaProgramma(HttpServletRequest request) throws SQLException {
+        List<Programma> listFilter = new ArrayList<>();
+         
+        String sql = "select op.*, p.*, c.* from orari_programma as op "
+	        		+ "join programma p on p.id = op.id_programma "
+	        		+ "join canale c on c.id = op.id_canale "
+	        		+ "WHERE p.nome LIKE ? AND p.genere LIKE ? ";
+        connect();
+        String nome_filtro= "%" + request.getParameter("nome") + "%";
+		String genere_filtro=  "%" + request.getParameter("genere") + "%";
+		if (request.getParameter("datamax") != "") {
+			String data_max = request.getParameter("datamax");
+			sql += " AND DATE(op.data_inizio) < DATE('" + data_max + "') " ;
+		}
+		if (request.getParameter("datamin") != "") {
+			String data_min = request.getParameter("datamin");
+			sql += " AND DATE(op.data_inizio) > DATE('" + data_min + "') " ;
+		}
+		if (request.getParameter("oramin") != "") {
+			String ora_min = request.getParameter("oramin");
+			sql += " AND TIME(op.data_inizio) > TIME('" + ora_min + "') " ;
+		}
+		if (request.getParameter("oramax") != "") {
+			String ora_max = request.getParameter("oramax");
+			sql += " AND TIME(op.data_inizio) > TIME('" + ora_max + "') " ;
+		}
+		if (request.getParameter("id_canale") != "") {
+			String id_canale = request.getParameter("id_canale");
+			sql += " AND id_canale = " + id_canale ;
+		}
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setString(1, nome_filtro);
+        statement.setString(2, genere_filtro);
+        statement.toString();
+        ResultSet resultSet = statement.executeQuery();
+        
+        while (resultSet.next()) {
+        	int id = resultSet.getInt("p.id");
+        	String nome = resultSet.getString("nome");
+            String descrizione = resultSet.getString("descrizione");
+            String genere = resultSet.getString("genere");
+            String link_scheda = resultSet.getString("link_scheda");
+            String link_immagine = resultSet.getString("link_immagine");
+            String nome_canale = resultSet.getString("c.nome");
+            int isTvShowInt = resultSet.getInt("isTvShow");
+            boolean isTvShow;
+            if (isTvShowInt == 1) {
+            	isTvShow = true;
+            }
+            else {
+            	isTvShow = false;
+            }
+            int numero_stagione = resultSet.getInt("numero_stagione");
+            int numero_episodio = resultSet.getInt("numero_episodio");
+            int id_canale = resultSet.getInt("id_canale");
+            int id_orario = resultSet.getInt("op.id");
+            Timestamp data_inizio = resultSet.getTimestamp("data_inizio");
+            Timestamp data_fine = resultSet.getTimestamp("data_fine");
+            Programma programma = new Programma(id, nome, descrizione, genere, link_scheda, link_immagine, isTvShow, numero_stagione, numero_episodio, id_canale, nome_canale, id_orario, data_inizio, data_fine);
+            listFilter.add(programma);
+    	}
+        
+         
+        disconnect();
+        
+        return listFilter;
     }
 }
 

@@ -71,7 +71,7 @@
               <li><a href="pages/sidebar-right.html">Metterci</a></li>
             </ul>
           </li>
-          <li><a class="drop" href="#">Ricerca Programma</a>
+          <li><a class="drop" href="/guidatv/programma/find">Ricerca Programma</a>
             <ul>
               <li><a href="#">Level 2</a></li>
               <li><a class="drop" href="#">Level 2 + Drop</a>

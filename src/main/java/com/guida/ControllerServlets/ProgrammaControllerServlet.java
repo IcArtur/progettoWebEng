@@ -191,19 +191,7 @@ public class ProgrammaControllerServlet extends HttpServlet {
     
     private void findProgramma(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-    	String nome=request.getParameter("nome");
-		String descrizione="";
-		String genere=request.getParameter("genere");
-//		String String_data_max=request.getParameter("datamax");
-//		Timestamp data_max = Timestamp.valueOf(String_data_max);
-//		String String_data_min=request.getParameter("datamin");
-//		Timestamp data_min = Timestamp.valueOf(String_data_min);
-		String String_ora_max=request.getParameter("oramax");
-		LocalTime oramax = LocalTime.parse(String_ora_max);
-		String String_ora_min=request.getParameter("oramin");
-		Timestamp oramin = Timestamp.valueOf(String_ora_min);
-		int id_canale=Integer.parseInt(request.getParameter("id_canale"));
-        List<Programma> listProgramma = programmaDAO.listAllProgramma();
+        List<Programma> listProgramma = programmaDAO.ricercaProgramma(request);
         request.setAttribute("listProgramma", listProgramma);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/ricercaprogramma.jsp");
         dispatcher.forward(request, response);
