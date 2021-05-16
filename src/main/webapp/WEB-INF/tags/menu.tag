@@ -1,4 +1,5 @@
-<%@tag description="Template Tag" pageEncoding="UTF-8"%>
+	<%@tag description="Template Tag" pageEncoding="UTF-8"%>
+
 <html lang="en">
 <head>	
 <title>GuidaTV</title>
@@ -6,11 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="/guidatv/layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
 <link href="/guidatv/css/general.css" rel="stylesheet" type="text/css" media="all">
+<link rel="shortcut icon" href="/guidatv/images/favicon.ico" />
 
 </head>
 <body id="top">
 
-<div class="bgded overlay" style="background-image:url('images/demo/backgrounds/01.png');"> 
+<div class="bgded overlay"> 
   <!-- ################################################################################################ -->
   <div class="wrapper row0">
     <div id="topbar" class="hoc clear">
@@ -28,8 +30,8 @@
           <li><a href="/guidatv/homepage.jsp" title="Home"><i class="fas fa-home"></i></a></li>
           <li><a href="/guidatv/login.html" title="Login"><i class="fas fa-sign-in-alt"></i></a></li>
           <li><a href="/guidatv/registrazione.html" title="Registrati"><i class="fas fa-edit"></i></a></li>
-          <li><a href="/guidatv/profilo.jsp" title="Profilo"><i class="fas fa-user"></i></a></li>
-          <li><a href="/guidatv/login.html" title="Logout"><i class="fas fa-sign-out-alt"></i></a></li>
+          <li><a href="/guidatv/utente/profilo" title="Profilo"><i class="fas fa-user"></i></a></li>
+          <li><a href="/guidatv/utente/logout" title="Logout"><i class="fas fa-sign-out-alt"></i></a></li>
         </ul>
         <!-- ################################################################################################ -->
       </div>
@@ -46,7 +48,21 @@
       <nav id="mainav" class="fl_right"> 
         <!-- ################################################################################################ -->
         <ul class="clear">
-          <li class="active"><a href="/guidatv/homepage.jsp">Home</a></li>
+        <%
+		if (session.getAttribute("isAdmin") == null)
+		{
+			
+		}
+		else if ( ( (Boolean) session.getAttribute("isAdmin")) == true )
+		{
+			%>
+			<li class="active"><a href="/guidatv/admin/programma/list">Pannello admin</a></li>
+			<%
+		}
+		%>
+						
+           
+          
           <li><a class="drop" href="/guidatv/homepage.jsp">Homepage</a>
             <ul>
               <li><a href="pages/gallery.html">Non</a></li>
@@ -68,8 +84,8 @@
               <li><a href="#">Level 2</a></li>
             </ul>
           </li>
-          <li><a href="#">Programma singolo</a></li>
-          <li><a href="#">Profilo</a></li>
+          <li><a href="/guidatv/scheda/programma?id=27">Programma singolo</a></li>
+          <li><a href="/guidatv/utente/profilo">Profilo</a></li>
         </ul>
         <!-- ################################################################################################ -->
       </nav>

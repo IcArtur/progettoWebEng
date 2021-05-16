@@ -4,15 +4,17 @@
 <%@ taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="com.guida.Model.Utente"%>
 
 <c:set var="bodyContent">
 	<%
-		if(session.getAttribute("user")==null){
+		Utente utente = (Utente) session.getAttribute("utente");
+		if(utente == null){
 			response.sendRedirect("/guidatv/login.html");
 		}
-		else if ( ( (Boolean) session.getAttribute("isAdmin") ).booleanValue() != true )
+		else if ( utente.getIsAdmin() != true )
 		{
-			response.sendRedirect("/guidatv/login.html");
+			response.sendRedirect("/guidatv/homepage.jsp");
 		}
 	%>
 <style type="text/css">@import url("/guidatv/css/admin.css");</style>

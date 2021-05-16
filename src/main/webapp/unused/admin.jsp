@@ -107,7 +107,7 @@ rs.close(); */
 	<span class="query_field">Email:</span>
 		<input type="email" name="email">
 	<span class="query_field">Mail giornaliere?</span>
-		<input id="checkboxmail" type="checkbox" checked="checked" name="mailgiornaliere">
+		<input id="checkboxmail" type="checkbox" checked="checked" name="mail_giornaliere">
 	<span class="query_field">Admin?</span>
 		<input id="checkboxadmin" type="checkbox" name="checkboxadmin">
 	<br>

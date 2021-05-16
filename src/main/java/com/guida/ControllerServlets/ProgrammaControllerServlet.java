@@ -5,6 +5,7 @@ import com.guida.Servlets.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.*;
 import java.util.List;
 
 import jakarta.servlet.RequestDispatcher;
@@ -57,6 +58,9 @@ public class ProgrammaControllerServlet extends HttpServlet {
                 break;
             case "/update":
                 updateProgramma(request, response);
+                break;
+            case "/find":
+                findProgramma(request, response);
                 break;
             default:
                 listProgramma(request, response);
@@ -183,6 +187,26 @@ public class ProgrammaControllerServlet extends HttpServlet {
         Programma programma = new Programma(id_orario);
         programmaDAO.deleteProgramma(programma);
         response.sendRedirect("list");
+    }
+    
+    private void findProgramma(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+    	String nome=request.getParameter("nome");
+		String descrizione="";
+		String genere=request.getParameter("genere");
+//		String String_data_max=request.getParameter("datamax");
+//		Timestamp data_max = Timestamp.valueOf(String_data_max);
+//		String String_data_min=request.getParameter("datamin");
+//		Timestamp data_min = Timestamp.valueOf(String_data_min);
+		String String_ora_max=request.getParameter("oramax");
+		LocalTime oramax = LocalTime.parse(String_ora_max);
+		String String_ora_min=request.getParameter("oramin");
+		Timestamp oramin = Timestamp.valueOf(String_ora_min);
+		int id_canale=Integer.parseInt(request.getParameter("id_canale"));
+        List<Programma> listProgramma = programmaDAO.listAllProgramma();
+        request.setAttribute("listProgramma", listProgramma);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/ricercaprogramma.jsp");
+        dispatcher.forward(request, response);
     }
 }
  

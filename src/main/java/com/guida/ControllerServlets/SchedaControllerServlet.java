@@ -11,7 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
- 
+
 
 public class SchedaControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -25,7 +25,6 @@ public class SchedaControllerServlet extends HttpServlet {
  
         programmaDAO = new ProgrammaDAO(jdbcURL, jdbcUsername, jdbcPassword);
         canaleDAO = new CanaleDAO(jdbcURL, jdbcUsername, jdbcPassword);
- 
     }
  
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -58,6 +57,7 @@ public class SchedaControllerServlet extends HttpServlet {
         Programma existingProgramma = programmaDAO.getSoloProgramma(id);
         request.setAttribute("listOrari", listProgramma);
         request.setAttribute("programma", existingProgramma);
+        request.setAttribute("isTvShow", existingProgramma.getIsTvShow());
         RequestDispatcher dispatcher = request.getRequestDispatcher("/programma.jsp");
         dispatcher.forward(request, response);
     }

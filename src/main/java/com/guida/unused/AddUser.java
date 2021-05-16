@@ -30,12 +30,12 @@ public class AddUser extends HttpServlet{
 			String username=request.getParameter("username");
 			String password=request.getParameter("password");
 			String email=request.getParameter("email");
-			String mailgiornaliere=request.getParameter("mailgiornaliere");
-			if (mailgiornaliere != null) {
-				mailgiornaliere = "1";
+			String mail_giornaliere=request.getParameter("mail_giornaliere");
+			if (mail_giornaliere != null) {
+				mail_giornaliere = "1";
 			}
 			else {
-				mailgiornaliere = "0";
+				mail_giornaliere = "0";
 			}
 			String checkboxadmin=request.getParameter("checkboxadmin");
 			if (checkboxadmin != null) {
@@ -60,7 +60,7 @@ public class AddUser extends HttpServlet{
 				statement.setString (1, username);
 				statement.setString (2, password);
 				statement.setString (3, email);
-				statement.setString (4, mailgiornaliere);
+				statement.setString (4, mail_giornaliere);
 				statement.setString (5, checkboxadmin);
 				int affected_rows = statement.executeUpdate();
 				if (affected_rows != 0) {

@@ -2,9 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="com.guida.Model.Programma"%>
 
 
 
+<%
+	if(session.getAttribute("utente")==null){
+		response.sendRedirect("/guidatv/login.html");
+	}
+%>
 <c:set  var="bodyContent">
 	<style type="text/css">@import url("/guidatv/css/scheda.css");</style>
 
@@ -24,18 +30,19 @@
 		    	<h2>Tipologia:</h2>
 		    	<%
 						try {
-							if (session.getAttribute("isTvShow") == "false") {
-								%>
-								Film
-								<%
-							}
-							else {
+							Programma newProgramma = (Programma) request.getAttribute("programma");
+							if (newProgramma.getIsTvShow() == true) {
 								%>
 								Serie TV
 								<h2>Numero Stagione:</h2>
 						    	<c:out value="${programma.numero_stagione}" />
 						    	<h2>Numero Episodio:</h2>
 						    	<c:out value="${programma.numero_episodio}" />
+								<%
+							}
+							else {
+								%>
+								Film
 								<%
 							}
 						} catch (Exception e) {
