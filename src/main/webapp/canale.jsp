@@ -24,15 +24,19 @@
 		            <caption>Programmazione della Giornata<br></caption>
 		            <tr>
 		                <th>Programma</th>
+		                <th>Genere</th>
 		                <th>Inizio</th>
 		                <th>Fine</th>
+		                <th>Immagine</th>
 		            </tr>
 		            
 		            <c:forEach var="orari" items="${listOrariGiornalieri}">
 		                <tr>
-		                    <td><c:out value="${orari.nome}" /></td>
+		                    <td><a href="/guidatv/scheda/programma?id=<c:out value="${orari.id}"/>"><c:out value="${orari.nome}" /></a></td>
+		                    <td><c:out value="${orari.genere}" /></td>
 		                    <td><c:out value="${orari.data_inizio}" /></td>
 		                    <td><c:out value="${orari.data_fine}" /></td>
+		                    <td class="col-img"><img src="<c:out value="${orari.link_immagine}" /> 	"></td>
 		                </tr>
 		            </c:forEach>
 		        </table>

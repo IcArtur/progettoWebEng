@@ -28,32 +28,23 @@
 		    	<h2>Genere programma:</h2>
 		    	<c:out value="${programma.genere}" />
 		    	<h2>Tipologia:</h2>
-		    	<%
-						try {
-							Programma newProgramma = (Programma) request.getAttribute("programma");
-							if (newProgramma.getIsTvShow() == true) {
-								%>
-								Serie TV
-								<%
-							}
-							else {
-								%>
-								Film
-								<%
-							}
-						} catch (Exception e) {
-							
-						}
-					%>
+		    	<c:choose>
+					<c:when test="${programma.isTvShow == true}">
+						Serie TV
+					</c:when>
+					<c:otherwise>
+						Film
+					</c:otherwise>
+				</c:choose>
 		    	<h2>Link Scheda Wikipedia:</h2>
 		    	<a href="<c:out value="${programma.link_scheda}" />">Link Scheda</a>
 		    	<br><br><br>
-		    	
 		    	
 		        <table border="1" cellpadding="5">
 		            <caption>Programmazione<br></caption>
 		            <tr>
 		                <th>Canale</th>
+		                <th>Genere</th>
 		                <th>Inizio</th>
 		                <th>Fine</th>
 		               <c:choose>
@@ -66,7 +57,8 @@
 		            
 		            <c:forEach var="orari" items="${listOrari}">
 		                <tr>
-		                    <td><c:out value="${orari.nome_canale}" /></td>
+		                    <td><a href="/guidatv/scheda/canale?id=<c:out value="${orari.id_canale}" />"><c:out value="${orari.nome_canale}" /></a></td>
+		                    <td><c:out value="${orari.genere   	 	}" /></td>
 		                    <td><c:out value="${orari.data_inizio}" /></td>
 		                    <td><c:out value="${orari.data_fine}" /></td>
 		                    <c:choose>

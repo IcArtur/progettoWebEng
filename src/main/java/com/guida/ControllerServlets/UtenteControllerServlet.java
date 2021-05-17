@@ -56,6 +56,9 @@ public class UtenteControllerServlet extends HttpServlet {
             case "/update":
             	update(request, response);
                 break;
+            case "/v":
+            	update(request, response);
+                break;
             }
         } catch (SQLException ex) {
             throw new ServletException(ex);

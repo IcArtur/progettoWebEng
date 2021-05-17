@@ -1,3 +1,7 @@
+body {
+	color:grey;
+}
+
 .scheda-container {
 	align:center;
 }
@@ -15,6 +19,14 @@
 
 .scheda-singola img {
 	max-width: 400px;
+}
+
+.col-img {
+	display: flex;
+    justify-content: center;
+}
+.col-img img{
+	max-height: 40px;
 }
 	
 

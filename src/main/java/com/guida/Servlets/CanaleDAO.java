@@ -105,7 +105,7 @@ public class CanaleDAO {
         boolean rowUpdated = statement.executeUpdate() > 0;
         statement.close();
 
-        return rowUpdated;     
+        return rowUpdated;
     }
      
     public Canale getCanale(int id) throws SQLException {
@@ -161,13 +161,14 @@ public class CanaleDAO {
             }
             int numero_stagione = resultSet.getInt("numero_stagione");
             int numero_episodio = resultSet.getInt("numero_episodio");
-            int id_canale = resultSet.getInt("id_canale");
-            int id_orario = resultSet.getInt("id");
+            int id_canale = id;
+            int id_programma = resultSet.getInt("p.id");
+            int id_orario = resultSet.getInt("op.id");
             String data_inizio_string = resultSet.getString("data_inizio");
             Timestamp data_inizio = resultSet.getTimestamp("data_inizio");
             String data_fine_string = resultSet.getString("data_fine");
             Timestamp data_fine = resultSet.getTimestamp("data_fine");
-            Programma programma = new Programma(id, nome, descrizione, genere, link_scheda, link_immagine, isTvShow, numero_stagione, numero_episodio, id_canale, nome_canale, id_orario, data_inizio, data_fine);
+            Programma programma = new Programma(id_programma, nome, descrizione, genere, link_scheda, link_immagine, isTvShow, numero_stagione, numero_episodio, id_canale, nome_canale, id_orario, data_inizio, data_fine);
             listOrariGiornalieri.add(programma);
     	}
         
