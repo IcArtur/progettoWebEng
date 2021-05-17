@@ -137,7 +137,8 @@ public class CanaleDAO {
 	        		+ "join programma p on p.id = op.id_programma "
 	        		+ "join canale c on c.id = op.id_canale "
 	        		+ "WHERE op.id_canale = ? "
-	        		+ "AND date(op.data_inizio) = date(now())";
+	        		+ "AND date(op.data_inizio) = date(now()) "
+	        		+ " ORDER by op.data_inizio ";
         connect();
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setInt (1, id);
@@ -162,7 +163,9 @@ public class CanaleDAO {
             int numero_episodio = resultSet.getInt("numero_episodio");
             int id_canale = resultSet.getInt("id_canale");
             int id_orario = resultSet.getInt("id");
+            String data_inizio_string = resultSet.getString("data_inizio");
             Timestamp data_inizio = resultSet.getTimestamp("data_inizio");
+            String data_fine_string = resultSet.getString("data_fine");
             Timestamp data_fine = resultSet.getTimestamp("data_fine");
             Programma programma = new Programma(id, nome, descrizione, genere, link_scheda, link_immagine, isTvShow, numero_stagione, numero_episodio, id_canale, nome_canale, id_orario, data_inizio, data_fine);
             listOrariGiornalieri.add(programma);

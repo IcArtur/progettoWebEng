@@ -38,11 +38,11 @@
 		</div>
 		<div class="filter">
 			<span>Dal:</span>
-			<input type="date" name="datamax">
+			<input type="date" name="datamin">
 		</div>
 		<div class="filter">
 			<span>Al:</span>
-			<input type="date" name="datamin">
+			<input type="date" name="datamax">
 		</div>
 		<div class="filter">
 			<span>Canale:</span>

@@ -33,12 +33,14 @@
         </div>
 	</div>
 	<div align="center">
-		<c:if test="${programma != null}">
-			<form action="update" method="post">
-		</c:if>
-		<c:if test="${programma == null}">
-			<form action="insert" method="post">
-		</c:if>
+		<c:choose>
+			<c:when test="${programma != null && programma.isTvShow == false}">
+				<form action="update" method="post">
+			</c:when>
+			<c:otherwise>
+				<form action="insert" method="post">
+			</c:otherwise>
+		</c:choose>
 		<table border="1" cellpadding="5">
 			<caption>
 				<h2>
@@ -82,7 +84,7 @@
 			<tr>
 				<th>E' una serie TV?</th>
 				<td><input type="checkbox" name="isTvShow" size="45"
-					value="<c:out value='${programma.link_immagine}' />" /></td>
+					checked="<c:out value='${programma.isTvShow}' />" /></td>
 			</tr>
 			<tr>
 				<th>Numero stagione:</th>
@@ -109,7 +111,7 @@
 			<tr>
 				<th>Canale:</th>
 				<td><select name="id_canale">
-						<option>---Scegli il canale---</option>
+					<option>-----Scegli canale-----</option>
 						<%
 					try {
 						Class.forName("com.mysql.jdbc.Driver");

@@ -27,8 +27,7 @@ public class Programma {
     }
     
     public Programma(int id, String nome, String descrizione, String genere, 
-			String link_scheda, String link_immagine, boolean isTvShow, 
-			int numero_stagione, int numero_episodio) {
+			String link_scheda, String link_immagine, boolean isTvShow) {
     	this.id = id;
     	this.nome = nome;
         this.descrizione = descrizione;
@@ -36,8 +35,6 @@ public class Programma {
         this.link_scheda = link_scheda;
         this.link_immagine = link_immagine;
         this.isTvShow = isTvShow;
-        this.numero_stagione = numero_stagione;
-        this.numero_episodio = numero_episodio;
     }
     
     public Programma(int id, String nome, String descrizione, String genere, 

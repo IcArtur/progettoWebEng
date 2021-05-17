@@ -168,9 +168,9 @@ public class ProgrammaControllerServlet extends HttpServlet {
 		}
 		String link_scheda=request.getParameter("link_scheda");
 		String link_immagine=request.getParameter("link_immagine");
-		String String_data_inizio=request.getParameter("data_inizio").replace('T', ' ');
+		String String_data_inizio=request.getParameter("data_inizio").replace('T', ' ')+":00";
 		Timestamp data_inizio = Timestamp.valueOf(String_data_inizio);
-		String String_data_fine=request.getParameter("data_fine").replace('T', ' ');
+		String String_data_fine=request.getParameter("data_fine").replace('T', ' ')+":00";
 		Timestamp data_fine = Timestamp.valueOf(String_data_fine);
 		int id_canale=Integer.parseInt(request.getParameter("id_canale"));
 		int id_orario=Integer.parseInt(request.getParameter("id_orario"));

@@ -34,10 +34,6 @@
 							if (newProgramma.getIsTvShow() == true) {
 								%>
 								Serie TV
-								<h2>Numero Stagione:</h2>
-						    	<c:out value="${programma.numero_stagione}" />
-						    	<h2>Numero Episodio:</h2>
-						    	<c:out value="${programma.numero_episodio}" />
 								<%
 							}
 							else {
@@ -50,7 +46,7 @@
 						}
 					%>
 		    	<h2>Link Scheda Wikipedia:</h2>
-		    	<c:out value="${programma.descrizione}" />
+		    	<a href="<c:out value="${programma.link_scheda}" />">Link Scheda</a>
 		    	<br><br><br>
 		    	
 		    	
@@ -60,6 +56,12 @@
 		                <th>Canale</th>
 		                <th>Inizio</th>
 		                <th>Fine</th>
+		               <c:choose>
+							<c:when test="${programma.isTvShow == true}">
+								<th>Stagione</th>
+								<th>Episodio</th>
+							</c:when>
+						</c:choose>
 		            </tr>
 		            
 		            <c:forEach var="orari" items="${listOrari}">
@@ -67,6 +69,12 @@
 		                    <td><c:out value="${orari.nome_canale}" /></td>
 		                    <td><c:out value="${orari.data_inizio}" /></td>
 		                    <td><c:out value="${orari.data_fine}" /></td>
+		                    <c:choose>
+								<c:when test="${programma.isTvShow == true}">
+									<td><c:out value="${orari.numero_stagione}" /></td>
+									<td><c:out value="${orari.numero_episodio}" /></td>
+								</c:when>
+							</c:choose>
 		                </tr>
 		            </c:forEach>
 		        </table>

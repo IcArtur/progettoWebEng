@@ -57,16 +57,14 @@ public class ProgrammaDAO {
 			idProgram = rs.getLong("id");
 		}
 		else {
-			String query = "INSERT INTO guidatv.programma (nome, descrizione, genere, isTvShow, numero_stagione, numero_episodio, link_scheda, link_immagine) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+			String query = "INSERT INTO guidatv.programma (nome, descrizione, genere, isTvShow, link_scheda, link_immagine) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 			PreparedStatement statement = jdbcConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			statement.setString (1, programma.getNome());
 			statement.setString (2, programma.getDescrizione());
 			statement.setString (3, programma.getGenere());
 			statement.setBoolean (4, programma.getIsTvShow());
-			statement.setInt (5, programma.getnumero_stagione());
-			statement.setInt (6, programma.getnumero_episodio());
-			statement.setString (7, programma.getlink_scheda());
-			statement.setString (8, programma.getlink_immagine());
+			statement.setString (5, programma.getlink_scheda());
+			statement.setString (6, programma.getlink_immagine());
 			statement.executeUpdate();
 			try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
 	            if (generatedKeys.next()) {
@@ -75,12 +73,15 @@ public class ProgrammaDAO {
 			}
 		}
         
-		String query2 = "INSERT INTO guidatv.orari_programma (data_inizio, data_fine, id_canale, id_programma) VALUES (?, ?, ?, ?);";
+		String query2 = "INSERT INTO guidatv.orari_programma (data_inizio, data_fine, id_canale, id_programma, numero_stagione, numero_episodio) VALUES (?, ?, ?, ?, ?, ?);";
 		PreparedStatement statement2 = jdbcConnection.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
 		statement2.setTimestamp (1, programma.getdata_inizio());
 		statement2.setTimestamp (2, programma.getdata_fine());
 		statement2.setInt (3, programma.getId_canale());
 		statement2.setLong (4, idProgram);
+		statement2.setInt (5, programma.getnumero_stagione());
+		statement2.setInt (6, programma.getnumero_episodio());
+		
 		statement2.toString();
 		boolean rowInserted = statement2.executeUpdate() > 0;
 		
@@ -136,7 +137,8 @@ public class ProgrammaDAO {
 	        		+ "join programma p on p.id = op.id_programma "
 	        		+ "join canale c on c.id = op.id_canale "
 	        		+ "WHERE op.id_programma = ?"
-	        		+ " AND op.data_inizio > CURRENT_TIMESTAMP()";
+	        		+ " AND op.data_inizio > CURRENT_TIMESTAMP() "
+	        		+ " ORDER by op.data_inizio";
         connect();
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setInt (1, id);
@@ -283,9 +285,7 @@ public class ProgrammaDAO {
             else {
             	isTvShow = false;
             }
-            int numero_stagione = resultSet.getInt("numero_stagione");
-            int numero_episodio = resultSet.getInt("numero_episodio");
-            programma = new Programma(id, nome, descrizione, genere, link_scheda, link_immagine, isTvShow, numero_stagione, numero_episodio);
+            programma = new Programma(id, nome, descrizione, genere, link_scheda, link_immagine, isTvShow);
         	
         }
         resultSet.close();
@@ -305,19 +305,19 @@ public class ProgrammaDAO {
 		String genere_filtro=  "%" + request.getParameter("genere") + "%";
 		if (request.getParameter("datamax") != "") {
 			String data_max = request.getParameter("datamax");
-			sql += " AND DATE(op.data_inizio) < DATE('" + data_max + "') " ;
+			sql += " AND DATE(op.data_inizio) <= DATE('" + data_max + "') " ;
 		}
 		if (request.getParameter("datamin") != "") {
 			String data_min = request.getParameter("datamin");
-			sql += " AND DATE(op.data_inizio) > DATE('" + data_min + "') " ;
+			sql += " AND DATE(op.data_inizio) >= DATE('" + data_min + "') " ;
 		}
 		if (request.getParameter("oramin") != "") {
 			String ora_min = request.getParameter("oramin");
-			sql += " AND TIME(op.data_inizio) > TIME('" + ora_min + "') " ;
+			sql += " AND TIME(op.data_inizio) >= TIME('" + ora_min + "') " ;
 		}
 		if (request.getParameter("oramax") != "") {
 			String ora_max = request.getParameter("oramax");
-			sql += " AND TIME(op.data_inizio) > TIME('" + ora_max + "') " ;
+			sql += " AND TIME(op.data_inizio) <= TIME('" + ora_max + "') " ;
 		}
 		if (request.getParameter("id_canale") != "") {
 			String id_canale = request.getParameter("id_canale");
