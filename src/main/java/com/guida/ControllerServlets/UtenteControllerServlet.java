@@ -56,8 +56,8 @@ public class UtenteControllerServlet extends HttpServlet {
             case "/update":
             	update(request, response);
                 break;
-            case "/v":
-            	update(request, response);
+            case "/activate":
+            	activate(request, response);
                 break;
             }
         } catch (SQLException ex) {
@@ -106,8 +106,8 @@ public class UtenteControllerServlet extends HttpServlet {
 		String  email = request.getParameter("email");
 		Utente utente = new Utente(username, password, email);
 		try {
-			utenteDAO.insertUtente(utente);
-			response.sendRedirect("/guidatv/login.html");
+			utenteDAO.registerUtente(utente);
+			response.sendRedirect("/guidatv/verifica.jsp");
 		}
 		catch (Exception e) {
 			response.sendRedirect("/guidatv/registrazione.html");
@@ -128,6 +128,20 @@ public class UtenteControllerServlet extends HttpServlet {
 			Utente newUtente = new Utente(id, username, password, email);
 			utenteDAO.updateUtente(newUtente);
 	        response.sendRedirect("/guidatv/utente/logout");
+    }
+    
+    private void activate(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+			String email=request.getParameter("email");
+			String hash=request.getParameter("hash");
+			Utente utente = Utente.UtenteActivate(email, hash);
+			Boolean result = utenteDAO.activateUser(utente);
+			if (result) {
+				response.sendRedirect("/guidatv/homepage.jsp");
+			}
+			else {
+				response.sendRedirect("/guidatv/utente/registrazione");
+			}
     }
 }
  

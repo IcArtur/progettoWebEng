@@ -2,8 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="com.guida.Model.Utente"%>
 
 
+<%
+		Utente utente = (Utente) session.getAttribute("utente");
+		if(utente == null){
+			response.sendRedirect("/guidatv/login.html");
+		}
+		else if ( utente.gethas_confirmed() != true )
+		{
+			response.sendRedirect("/guidatv/verifica.jsp");
+		}
+%>
 
 <c:set  var="bodyContent">
 	<style type="text/css">@import url("/guidatv/css/scheda.css");</style>

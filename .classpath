@@ -15,7 +15,9 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-2.0.0.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-api-2.0.0.jar"/>
-	<classpathentry kind="lib" path="/home/debianfra/Downloads/javamail/javax.mail.jar"/>
-	<classpathentry kind="lib" path="/home/debianfra/Downloads/javamail/activation-jaf1.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/debianfra/Downloads/javax.servlet-api-4.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/debianfra/Downloads/commons-codec-1.7.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/activation-jaf1.1.1.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/javax.mail.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

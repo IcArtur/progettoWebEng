@@ -3,13 +3,18 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="com.guida.Model.Programma"%>
-
+<%@ page import="com.guida.Model.Utente"%>
 
 
 <%
-	if(session.getAttribute("utente")==null){
-		response.sendRedirect("/guidatv/login.html");
-	}
+		Utente utente = (Utente) session.getAttribute("utente");
+		if(utente == null){
+			response.sendRedirect("/guidatv/login.html");
+		}
+		else if ( utente.gethas_confirmed() != true )
+		{
+			response.sendRedirect("/guidatv/verifica.jsp");
+		}
 %>
 <c:set  var="bodyContent">
 	<style type="text/css">@import url("/guidatv/css/scheda.css");</style>

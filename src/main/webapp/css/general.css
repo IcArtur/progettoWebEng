@@ -30,3 +30,14 @@ h1,h1 {
 .bgded.overlay.row4 {
 	margin-top:15px;
 }
+
+.verify-div {
+	background-color: black;
+	padding:16px;
+	border: 1px solid #ccc!important;
+	border-radius: 16px;
+	text-align: center;
+	max-width:50%;
+	color: grey;
+	align-self:center;
+}

@@ -1,22 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@ page import="com.guida.Model.Utente"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="com.guida.Model.Programma"%>
+<%@ page import="com.guida.Model.Utente"%>
+
+
+<%
+		Utente utente = (Utente) session.getAttribute("utente");
+		if(utente == null){
+			response.sendRedirect("/guidatv/login.html");
+		}
+		else if ( utente.gethas_confirmed() != true )
+		{
+			response.sendRedirect("/guidatv/verifica.jsp");
+		}
+%>
 
 
 
 
 <c:set var="bodyContent">
 	<style type="text/css">@import url("/guidatv/css/ricercaprogramma.css");</style>
-	<%
-		Utente utente = (Utente) session.getAttribute("utente");
-		if(utente == null){
-			response.sendRedirect("/guidatv/login.html");
-		}
-	%>
 	<style type="text/css">@import url("/guidatv/css/admin.css");</style>
 	
 	<form action="/guidatv/programma/find" method="post">
@@ -107,11 +114,19 @@
 						}
 					%>
                     </td>
-                    <td><c:out value="${programma.numero_stagione}" /></td>
-                    <td><c:out value="${programma.numero_episodio}" /></td>
-                    <td><c:out value="${programma.data_inizio}" /></td>
-                    <td><c:out value="${programma.data_fine}" /></td>
-                    <td><c:out value="${programma.id_canale}" /></td>
+                    <td>
+                    	<c:if test="${programma.numero_stagione > 0}">
+							<c:out value="${programma.numero_stagione}" />
+						</c:if>
+                    </td>
+                    <td>
+                    	<c:if test="${programma.numero_episodio > 0}">
+							<c:out value="${programma.numero_episodio}" />
+						</c:if>
+                    </td>
+                    <td><c:out value="${fn:substring(programma.data_inizio, 0, 19)}" /></td>
+                    <td><c:out value="${fn:substring(programma.data_fine, 0, 19)}" /></td>
+                    <td><c:out value="${programma.nome_canale}" /></td>
                     <td>
                         <a href="/guidatv/scheda/programma?id=<c:out value='${programma.id}' />">Scheda</a>                  
                     </td>

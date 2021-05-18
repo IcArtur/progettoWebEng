@@ -6,13 +6,19 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="com.guida.Model.Utente"%>
 
-<c:set var="bodyContent">
-	<%
+
+<%
 		Utente utente = (Utente) session.getAttribute("utente");
 		if(utente == null){
 			response.sendRedirect("/guidatv/login.html");
 		}
-	%>
+		else if ( utente.gethas_confirmed() != true )
+		{
+			response.sendRedirect("/guidatv/verifica.jsp");
+		}
+%>
+
+<c:set var="bodyContent">
 <style type="text/css">@import url("/guidatv/css/admin.css");</style>
 <div align="center">
         <h1>Utente ${utente.username}</h1>

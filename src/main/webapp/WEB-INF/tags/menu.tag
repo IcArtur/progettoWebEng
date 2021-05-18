@@ -84,7 +84,7 @@
               <li><a href="#">Level 2</a></li>
             </ul>
           </li>
-          <li><a href="/guidatv/scheda/programma?id=27">Programma singolo</a></li>
+          <li><a href="/guidatv/scheda/programma?id=22">Programma singolo</a></li>
           <li><a href="/guidatv/utente/profilo">Profilo</a></li>
         </ul>
         <!-- ################################################################################################ -->

@@ -41,7 +41,7 @@ public class UtenteDAO {
         }
     }
      
-    public boolean insertUtente(Utente utente) throws SQLException {
+    public boolean registerUtente(Utente utente) throws SQLException {
     	connect();
     	PreparedStatement checkstatement = jdbcConnection.prepareStatement("SELECT * from guidatv.utente WHERE username = ?");
 		checkstatement.setString (1, utente.getUsername());
@@ -53,12 +53,18 @@ public class UtenteDAO {
 			//Implementare errore "Utente gia esistente"
 		}
 		else {
-			String query = "INSERT INTO guidatv.utente (username, password, email) VALUES (?, ?, ?);";
+			String query = "INSERT INTO guidatv.utente (username, password, email, hash) VALUES (?, ?, ?, ?);";
 			PreparedStatement statement = jdbcConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			statement.setString (1, utente.getUsername());
 			statement.setString (2, utente.getPassword());
 			statement.setString (3, utente.getEmail());
+			statement.setString (4, utente.getHash());
 			rowInserted = statement.executeUpdate() > 0;
+		}
+		if (rowInserted) {
+			SendEmail se = new SendEmail(utente.getEmail(), utente.getHash());
+			se.sendEmail();
+			
 		}
 		disconnect();
         return rowInserted;
@@ -86,6 +92,14 @@ public class UtenteDAO {
             else {
             	mail_giornaliere = false;
             }
+            int has_confirmedInt = resultSet.getInt("has_confirmed");
+            boolean has_confirmed;
+            if (has_confirmedInt == 1) {
+            	has_confirmed = true;
+            }
+            else {
+            	has_confirmed = false;
+            }
             int isAdminInt = resultSet.getInt("isAdmin");
             boolean isAdmin;
             if (isAdminInt == 1) {
@@ -95,7 +109,7 @@ public class UtenteDAO {
             	isAdmin = false;
             }
 
-            Utente utente = new Utente(id, username, password, email, mail_giornaliere, isAdmin);
+            Utente utente = new Utente(id, username, password, email, mail_giornaliere, isAdmin, has_confirmed);
             listProgramma.add(utente);
         }
          
@@ -162,6 +176,14 @@ public class UtenteDAO {
             else {
             	mail_giornaliere = false;
             }
+            int has_confirmedInt = resultSet.getInt("has_confirmed");
+            boolean has_confirmed;
+            if (has_confirmedInt == 1) {
+            	has_confirmed = true;
+            }
+            else {
+            	has_confirmed = false;
+            }
             int isAdminInt = resultSet.getInt("isAdmin");
             boolean isAdmin;
             if (isAdminInt == 1) {
@@ -171,7 +193,7 @@ public class UtenteDAO {
             	isAdmin = false;
             }
 
-            utente = new Utente(id, username, password, email, mail_giornaliere, isAdmin);
+            utente = new Utente(id, username, password, email, mail_giornaliere, isAdmin, has_confirmed);
 
         }
         resultSet.close();
@@ -204,6 +226,14 @@ public class UtenteDAO {
             else {
             	mail_giornaliere = false;
             }
+            int has_confirmedInt = resultSet.getInt("has_confirmed");
+            boolean has_confirmed;
+            if (has_confirmedInt == 1) {
+            	has_confirmed = true;
+            }
+            else {
+            	has_confirmed = false;
+            }
             int isAdminInt = resultSet.getInt("isAdmin");
             boolean isAdmin;
             if (isAdminInt == 1) {
@@ -213,13 +243,37 @@ public class UtenteDAO {
             	isAdmin = false;
             }
 
-            utente = new Utente(id, username, password, email, mail_giornaliere, isAdmin);
+            utente = new Utente(id, username, password, email, mail_giornaliere, isAdmin, has_confirmed);
 
         }
         
         disconnect();
          
         return utente;
+    }
+    
+    public boolean activateUser(Utente utente) throws SQLException {
+    	boolean res = false;
+    	connect();
+    	String sql = "SELECT * from guidatv.utente WHERE email=? AND hash=? AND has_confirmed='0' ";
+    	String update = "UPDATE guidatv.utente SET has_confirmed='1' WHERE email=? AND hash=? ";
+    	try {
+    		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+            statement.setString(1, utente.getEmail());
+            statement.setString(2, utente.getHash());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+            	PreparedStatement statement2 = jdbcConnection.prepareStatement(update);
+            	statement2.setString(1, utente.getEmail());
+            	statement2.setString(2, utente.getHash());
+            	res = statement2.executeUpdate() > 0;
+            }
+    		
+    	} catch (Exception ex) {
+    		
+    	}
+    	
+    	return res;
     }
 }
 
