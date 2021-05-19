@@ -9,6 +9,11 @@
 <link href="/guidatv/css/general.css" rel="stylesheet" type="text/css" media="all">
 <link rel="shortcut icon" href="/guidatv/images/favicon.ico" />
 
+<!-- JAVASCRIPTS -->
+<script src="layout/scripts/jquery.min.js"></script>
+<script src="layout/scripts/jquery.backtotop.js"></script>
+<script src="layout/scripts/jquery.mobilemenu.js"></script>
+
 </head>
 <body id="top">
 
@@ -120,9 +125,6 @@
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <a id="backtotop" href="#top"><i class="fas fa-chevron-up"></i></a>
-<!-- JAVASCRIPTS -->
-<script src="layout/scripts/jquery.min.js"></script>
-<script src="layout/scripts/jquery.backtotop.js"></script>
-<script src="layout/scripts/jquery.mobilemenu.js"></script>
+
 </body>
 </html>

@@ -50,6 +50,11 @@ public class Utente {
     	this(username, password, email);
     	this.id = id;
     }
+    
+    public Utente(int id, String username, String password, String email, boolean mail_giornaliere) {
+    	this(id, username, password, email);
+    	this.mail_giornaliere = mail_giornaliere;
+    }
  
     public Utente(String username, String password, String email, boolean mail_giornaliere, boolean isAdmin, boolean has_confirmed) {
     	this(username, password, email);

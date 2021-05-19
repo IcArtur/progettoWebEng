@@ -26,7 +26,7 @@
 	<style type="text/css">@import url("/guidatv/css/ricercaprogramma.css");</style>
 	<style type="text/css">@import url("/guidatv/css/admin.css");</style>
 	
-	<form action="/guidatv/programma/find" method="post">
+	<form method="post">
 		<div class="filter">
 			<span>Titolo:</span>
 			<input type=text name="nome" value="<c:out value='${nome}' />" >
@@ -73,9 +73,35 @@
 			</select>
 		</div>
 		
-		<input type="submit" value="Cerca" />
+		<div class="filter">
+			<input type="submit" formaction="/guidatv/programma/findMail" style="display:block" value="Cerca" />
+			<input type="submit" formaction="/guidatv/programma/saveRicerca" style="display:block;width:auto;margin-top:10px" value="Salva Ricerca" />
+		</div>
+		<input name="id" type="hidden" value="<c:out value='${utente.id}' />" />
 	</form>
-	
+	<div align="center">
+	<%
+					try {
+						Class.forName("com.mysql.jdbc.Driver");
+						Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/guidatv", "artur", "Arturho22");
+						Statement st = con.createStatement();
+						String query = "SELECT * FROM guidatv.mailgiornaliere";
+						ResultSet rs = st.executeQuery(query);
+						while (rs.next()) {
+						%>
+						<div class="saved-search">
+							<span class="writes">Ricerca numero <%=rs.getRow() %></span>
+							<a href="/guidatv/programma/deleteSearch?id=<%=rs.getInt("id")%>"><i class="fas fa-window-close"></i></a>
+						</div>
+						<%
+						}
+						
+						
+					} catch (Exception e) {
+						
+					}
+				%>
+	</div>
     <div align="center">
         <table border="1">
             <tr>
@@ -140,4 +166,5 @@
 	    ${bodyContent}
 	</jsp:body>
 </t:menu>
+
 

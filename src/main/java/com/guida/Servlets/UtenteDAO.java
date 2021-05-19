@@ -134,7 +134,7 @@ public class UtenteDAO {
     }
      
     public boolean updateUtente(Utente utente) throws SQLException {
-    	String join_sql = "UPDATE guidatv.utente SET username = ?, password = ?, email = ? "
+    	String join_sql = "UPDATE guidatv.utente SET username = ?, password = ?, email = ?, mail_giornaliere = ? "
     			+ "WHERE id=? ";
         
         connect();
@@ -143,7 +143,8 @@ public class UtenteDAO {
         statement.setString (1, utente.getUsername());
 		statement.setString (2, utente.getPassword());
 		statement.setString (3, utente.getEmail());
-		statement.setInt (4, utente.getId());
+		statement.setBoolean (4, utente.getmail_giornaliere());
+		statement.setInt (5, utente.getId());
         
         statement.toString();
         

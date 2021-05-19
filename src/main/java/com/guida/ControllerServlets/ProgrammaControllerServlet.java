@@ -53,6 +53,9 @@ public class ProgrammaControllerServlet extends HttpServlet {
             case "/delete":
                 deleteProgramma(request, response);
                 break;
+            case "/deleteSearch":
+            	deleteSearch(request, response);
+                break;
             case "/edit":
                 showEditForm(request, response);
                 break;
@@ -61,6 +64,12 @@ public class ProgrammaControllerServlet extends HttpServlet {
                 break;
             case "/find":
                 findProgramma(request, response);
+                break;
+            case "/findMail":
+                findProgrammaMail(request, response);
+                break;
+            case "/saveRicerca":
+            	saveRicerca(request, response);
                 break;
             default:
                 listProgramma(request, response);
@@ -189,11 +198,34 @@ public class ProgrammaControllerServlet extends HttpServlet {
         response.sendRedirect("list");
     }
     
+    private void deleteSearch(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        int id_ricerca = Integer.parseInt(request.getParameter("id"));
+        programmaDAO.deleteRicerca(id_ricerca);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/programma/findMail");
+        dispatcher.forward(request, response);
+    }
+    
     private void findProgramma(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List<Programma> listProgramma = programmaDAO.ricercaProgramma(request);
         request.setAttribute("listProgramma", listProgramma);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/ricercaprogramma.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    private void findProgrammaMail(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        List<Programma> listProgramma = programmaDAO.ricercaProgramma(request);
+        request.setAttribute("listProgramma", listProgramma);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/mailgiornaliere.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    private void saveRicerca(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        boolean res = programmaDAO.saveRicerca(request);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/programma/findMail");
         dispatcher.forward(request, response);
     }
 }

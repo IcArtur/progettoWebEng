@@ -49,6 +49,23 @@
                     <input type="email" name="email" size="45" value="<c:out value='${utente.email}' />"/>
                 </td>
             </tr>
+            <tr>
+                <th>Mail giornaliere: </th>
+                <td>
+                	<div style="display:flex">
+	                    <input type="checkbox" id="mail_giornaliere"  name="mail_giornaliere" onchange="valueChanged()"
+	                    <c:choose>
+							<c:when test="${utente.mail_giornaliere == true}">
+								checked="true"
+							</c:when>
+						</c:choose> >
+						<a href="/guidatv/programma/findMail">
+							<input type="button"  id="toMailGiornaliere" 
+							style="margin-left:20%" value="Imposta mail giornaliera">
+						</a>
+					</div>
+                </td>
+            </tr>
             
             
             <tr>
@@ -61,7 +78,23 @@
                             value="<c:out value='${utente.id}' />"
                         />
         </form>
-    </div>   
+    </div>
+    <script type="text/javascript">
+	    $(document).ready(function(){
+            $("#toMailGiornaliere").hide();
+	    	if($('#mail_giornaliere').is(":checked"))   
+	            $("#toMailGiornaliere").show();
+	        else
+	            $("#toMailGiornaliere").hide();
+	    });
+	    function valueChanged()
+	    {
+	        if($('#mail_giornaliere').is(":checked"))   
+	            $("#toMailGiornaliere").show();
+	        else
+	            $("#toMailGiornaliere").hide();
+	    }
+</script>
 </c:set>
 <t:menu>
 	<jsp:body>

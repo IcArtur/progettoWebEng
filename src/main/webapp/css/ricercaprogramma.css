@@ -30,3 +30,13 @@ form input[type=submit] {
 	width:70px;
 	height:25px;
 }
+
+.saved-search {
+	background-color: black;
+	padding:10px;
+	border: 1px solid #ccc!important;
+	border-radius: 16px;
+	color: grey;
+	margin: 10px;
+	width:60%;
+}

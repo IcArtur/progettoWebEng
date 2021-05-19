@@ -190,6 +190,20 @@ public class ProgrammaDAO {
         disconnect();
         return rowDeleted;     
     }
+    
+    public boolean deleteRicerca(Integer id) throws SQLException {
+        String sql = "DELETE FROM guidatv.mailgiornaliere where id = ?";
+         
+        connect();
+         
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setInt(1, id);
+         
+        boolean rowDeleted = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowDeleted;     
+    }
      
     public boolean updateProgramma(Programma programma) throws SQLException {
     	String join_sql = "UPDATE programma as p "
@@ -357,8 +371,66 @@ public class ProgrammaDAO {
         
          
         disconnect();
-        
+        request.setAttribute("nome", request.getParameter("nome"));
+        request.setAttribute("genere", request.getParameter("genere"));
+        request.setAttribute("oramin", request.getParameter("oramin"));
+        request.setAttribute("oramax", request.getParameter("oramax"));
+        request.setAttribute("datamin", request.getParameter("datamin"));
+        request.setAttribute("datamax", request.getParameter("datamax"));
+        request.setAttribute("id_canale", request.getParameter("id_canale"));
         return listFilter;
+    }
+    
+    public boolean saveRicerca(HttpServletRequest request) throws SQLException {
+    	String nome_filtro= "\"%" + request.getParameter("nome") + "%\"";
+		String genere_filtro=  "\"%" + request.getParameter("genere") + "%\"";
+    	
+    	String sql = "select op.*, p.*, c.* from orari_programma as op "
+	        		+ "join programma p on p.id = op.id_programma "
+	        		+ "join canale c on c.id = op.id_canale "
+	        		+ "WHERE p.nome LIKE" + nome_filtro 
+	        		+ " AND p.genere LIKE " + genere_filtro + " ";
+        
+        String sql2 = "INSERT INTO guidatv.mailgiornaliere (id_utente, query) VALUES (?, ?);";
+        String id_utente = request.getParameter("id");
+        connect();
+        
+		if (request.getParameter("datamax") != "") {
+			String data_max = request.getParameter("datamax");
+			sql += " AND DATE(op.data_inizio) <= DATE('" + data_max + "') " ;
+		}
+		if (request.getParameter("datamin") != "") {
+			String data_min = request.getParameter("datamin");
+			sql += " AND DATE(op.data_inizio) >= DATE('" + data_min + "') " ;
+		}
+		if (request.getParameter("oramin") != "") {
+			String ora_min = request.getParameter("oramin");
+			sql += " AND TIME(op.data_inizio) >= TIME('" + ora_min + "') " ;
+		}
+		if (request.getParameter("oramax") != "") {
+			String ora_max = request.getParameter("oramax");
+			sql += " AND TIME(op.data_inizio) <= TIME('" + ora_max + "') " ;
+		}
+		if (request.getParameter("id_canale") != "") {
+			String id_canale = request.getParameter("id_canale");
+			sql += " AND id_canale = " + id_canale ;
+		}
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql2);
+        statement.setString(1, id_utente);
+        statement.setString(2, sql);
+        statement.toString();
+        boolean res = statement.executeUpdate() > 0;
+        
+        disconnect();
+        request.setAttribute("nome", request.getParameter("nome"));
+        request.setAttribute("genere", request.getParameter("genere"));
+        request.setAttribute("oramin", request.getParameter("oramin"));
+        request.setAttribute("oramax", request.getParameter("oramax"));
+        request.setAttribute("datamin", request.getParameter("datamin"));
+        request.setAttribute("datamax", request.getParameter("datamax"));
+        request.setAttribute("id_canale", request.getParameter("id_canale"));
+        
+        return res;
     }
 }
 

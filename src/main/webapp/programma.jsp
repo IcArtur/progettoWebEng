@@ -63,7 +63,7 @@
 		            <c:forEach var="orari" items="${listOrari}">
 		                <tr>
 		                    <td><a href="/guidatv/scheda/canale?id=<c:out value="${orari.id_canale}" />"><c:out value="${orari.nome_canale}" /></a></td>
-		                    <td><c:out value="${orari.genere   	 	}" /></td>
+		                    <td><c:out value="${orari.genere}" /></td>
 		                    <td><c:out value="${orari.data_inizio}" /></td>
 		                    <td><c:out value="${orari.data_fine}" /></td>
 		                    <c:choose>

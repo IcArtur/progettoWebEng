@@ -124,10 +124,21 @@ public class UtenteControllerServlet extends HttpServlet {
 			String username=request.getParameter("username");
 			String password=request.getParameter("password");
 			String email=request.getParameter("email");
+			boolean mail_giornaliere;
+			String mail_giornaliere_string=request.getParameter("mail_giornaliere");
+			if (mail_giornaliere_string != null) {
+				mail_giornaliere = true;
+			}
+			else {
+				mail_giornaliere = false;
+			}
 			int id=Integer.parseInt(request.getParameter("id"));
-			Utente newUtente = new Utente(id, username, password, email);
+			Utente newUtente = new Utente(id, username, password, email, mail_giornaliere);
 			utenteDAO.updateUtente(newUtente);
-	        response.sendRedirect("/guidatv/utente/logout");
+			Utente refreshUtente = utenteDAO.login(newUtente);
+			HttpSession session = request.getSession();
+			session.setAttribute("utente", refreshUtente);
+	        response.sendRedirect("/guidatv/utente/profilo");
     }
     
     private void activate(HttpServletRequest request, HttpServletResponse response)
