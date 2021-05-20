@@ -73,7 +73,7 @@ public class CanaleControllerServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/listacanale.jsp");
         dispatcher.forward(request, response);
     }
- 
+    
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/formcanale.jsp");

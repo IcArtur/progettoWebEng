@@ -3,7 +3,7 @@ package com.guida.Model;
 import java.sql.Timestamp;
 
 public class Programma {
-    protected int id;
+    protected Integer id;
     protected int id_canale;
     protected int id_orario;
     protected String nome;
@@ -17,6 +17,7 @@ public class Programma {
     protected int numero_episodio;
     protected Timestamp data_inizio;
     protected Timestamp data_fine;
+    protected Integer durata;
     
  
     public Programma() {
@@ -86,6 +87,54 @@ public class Programma {
     this.data_inizio = data_inizio;
     this.data_fine = data_fine;
 }
+    
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((data_fine == null) ? 0 : data_fine.hashCode());
+		result = prime * result + ((data_inizio == null) ? 0 : data_inizio.hashCode());
+		result = prime * result + ((durata == null) ? 0 : durata.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Programma other = (Programma) obj;
+		if (data_fine == null) {
+			if (other.data_fine != null)
+				return false;
+		} else if (!data_fine.equals(other.data_fine))
+			return false;
+		if (data_inizio == null) {
+			if (other.data_inizio != null)
+				return false;
+		} else if (!data_inizio.equals(other.data_inizio))
+			return false;
+		if (durata == null) {
+			if (other.durata != null)
+				return false;
+		} else if (!durata.equals(other.durata))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		return true;
+	}
         
     
     public int getId() {
@@ -201,5 +250,11 @@ public class Programma {
         this.data_fine = data_fine;
     }
     
+    public Integer getDurata() {
+		return durata;
+	}
+	public void setDurata(Integer durata) {
+		this.durata = durata;
+	}
     
 }

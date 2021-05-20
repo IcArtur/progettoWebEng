@@ -29,7 +29,20 @@ public class SchedaControllerServlet extends HttpServlet {
  
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+    	String action = request.getPathInfo();
+    	
+    	try {
+            switch (action) {
+            case "/homepage":
+                homepage(request, response);
+                break;
+            default:
+                doGet(request, response);
+                break;
+            }
+        } catch (SQLException ex) {
+            throw new ServletException(ex);
+        }
     }
  
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,6 +56,9 @@ public class SchedaControllerServlet extends HttpServlet {
                 break;
             case "/canale":
                 listOrariGiornalieri(request, response);
+                break;
+            case "/homepage":
+                homepage(request, response);
                 break;
             }
         } catch (SQLException ex) {
@@ -70,6 +86,14 @@ public class SchedaControllerServlet extends HttpServlet {
         request.setAttribute("listOrariGiornalieri", listOrariGiornalieri);
         request.setAttribute("canale", existingCanale);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/canale.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    private void homepage(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+    	String data_calendario = request.getParameter("data_calendario");
+        request.setAttribute("data_calendario", data_calendario);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/homepage.jsp");
         dispatcher.forward(request, response);
     }
 

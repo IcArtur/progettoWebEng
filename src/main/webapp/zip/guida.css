@@ -84,9 +84,20 @@ html, body, div, p {
 	background-color: #1a213b;
 }
 
+.channel img {
+	height:60px;
+	vertical-align:center;
+}
+
+.channel {
+	text-align:center;
+	
+}
+
 .p {
 	height: 100%;
 	float: left;
+	
 }
 
 .p>p {

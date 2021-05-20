@@ -1,82 +1,87 @@
 <%@page import="java.util.Map.Entry"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.HashMap"%>
+<%@page import="java.util.*"%>
 <%@page import="com.guida.Model.Programma"%>
-<%@page import="java.util.List"%>
 <%@page import="com.guida.Model.Canale"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
+<%@ page import="java.sql.Timestamp" %>
+<%@page import="java.time.*"%>
+<%@page import="java.sql.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="css/guida.css">
-</head>
-<body>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+	
 
-	<%
-	Map<Canale, List<Programma>> programs = new HashMap<>();
+	<style type="text/css">@import url("/guidatv/css/guida.css");</style>
+	<form action="/guidatv/canale/homepage">
+		<div align="center">
+			<fmt:formatDate var="fmtDate" value="<%=new java.util.Date()%>" pattern="YYYY-MM-dd"/>  
+			<input type="date" name="data_calendario"  value="${fmtDate}" />
+		</div>
+	</form>
+				
 
-	Class.forName("com.mysql.cj.jdbc.Driver");
+<%
+Map<Canale, List<Programma>> programs = new HashMap<>();
 
-	Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/guidatv", "root", "");
+String sql = "select op.*,p.*, c.*, "
+		+ "TIMESTAMPDIFF (MINUTE, op.data_inizio, op.data_fine) as durata "
+		+ "from orari_programma as op "
+		+ "join programma p on p.id = op.id_programma " 
+		+ "join canale c on c.id = op.id_canale "
+		+ "where date(op.data_inizio) = DATE(?) "
+		+ "ORDER by op.id_canale";
+Class.forName("com.mysql.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/guidatv", "artur", "Arturho22");
+PreparedStatement statement = con.prepareStatement(sql);
+String data =  (String) pageContext.getAttribute("data_calendario");
+if (data == null)
+{
+	data = java.time.LocalDate.now().toString();
+}
+statement.setString(1, data);
+ResultSet rs = statement.executeQuery();
 
-	Statement stmt = conn.createStatement();
 
-	ResultSet rs = stmt.executeQuery("select \r\n" + "op.id_canale, op.id_programma, op.data_inizio, op.data_fine,\r\n"
-			+ "p.nome as nome_programma, p.descrizione, p.genere,\r\n" + "c.nome as nome_canale,\r\n"
-			+ "TIMESTAMPDIFF (MINUTE, op.data_inizio, op.data_fine) as durata\r\n" + "from orari_programma as op\r\n"
-			+ "join programma p on p.id = op.id_programma\r\n" + "join canale c on c.id = op.id_canale\r\n"
-			+ "where date(op.data_inizio) < date(now())"
-			+ "ORDER by id_canale");
+while (rs.next()) {
 
-	while (rs.next()) {
+	Canale canale = new Canale();
+	canale.setId(rs.getInt("id_canale"));
+	canale.setNome(rs.getString("c.nome"));
+	canale.setImmagine(rs.getString("c.immagine"));
 
-		Canale channel = new Canale();
-		channel.setId(rs.getInt("id_canale"));
-		channel.setNome(rs.getString("nome_canale"));
+	List<Programma> list = programs.getOrDefault(canale, new ArrayList<Programma>());
 
-		List<Programma> list = programs.getOrDefault(channel, new ArrayList<Programma>());
+	Programma program = new Programma();
+	program.setId(rs.getInt("id_programma"));
+	program.setNome(rs.getString("p.nome"));
+	program.setdata_inizio(Timestamp.valueOf(rs.getString("data_inizio")));
+	program.setdata_fine(Timestamp.valueOf(rs.getString("data_fine")));
+	program.setDurata(rs.getInt("durata"));
+	program.setDescrizione(rs.getString("descrizione"));
 
-		Programma program = new Programma();
-		program.setId(rs.getInt("id_programma"));
-		program.setNome(rs.getString("nome_programma"));
-		program.setdata_inizio(rs.getString("data_inizio"));
-		program.setdata_fine(rs.getString("data_fine"));
-		program.setDurata(rs.getInt("durata"));
-		program.setDescrizione(rs.getString("descrizione"));
+	list.add(program);
 
-		list.add(program);
+	programs.put(canale, list);
 
-		programs.put(channel, list);
-
-	}
-	%>
+}
+%>
 
 	<div class="container">
 		<div class="channels">
 			<div class="title">
-				<p>Channels</p>
+				<p>Canali</p>
 			</div>
 			<%
 			Iterator<Entry<Canale, List<Programma>>> iter = programs.entrySet().iterator();
 
 			while (iter.hasNext()) {
 				Entry<Canale, List<Programma>> entry = iter.next();
-				Canale channel = entry.getKey();
+				Canale canale = entry.getKey();
 				List<Programma> list = entry.getValue();
 			%>
 			<div class="channel">
 				<p>
 					<img
-						src="${channel.getImmagine()}" />
+						src="<%=canale.getImmagine()%>" />
 				</p>
 			</div>
 			<%
@@ -177,7 +182,7 @@
 			while (pIter.hasNext()) {
 				Programma program = pIter.next();
 			%>
-				<div class="p h<%= program.getDurata() %>" onclick="showDetails('<%= channel.getId() %>', '<%= program.getName() %>', '<%= program.getDescrizione()%>')">
+				<div class="p h<%= program.getDurata() %>" onclick="showDetails('<%= channel.getId() %>', '<%= program.getNome() %>', '<%= program.getDescrizione()%>')">
 					<p>
 						<%= program.getNome() %>
 					</p>
@@ -199,26 +204,6 @@
 		</div>
 		<!-- end program -->
 	</div>
-	<!--  end container -->
-
-
-
-
-	<%-- 	<tr class="channel-row">
-		<td class="channel-logo"><%=channel.getName()%></td>
-
-		<td class="program-list">
-			<%
-			Iterator<Program> pIter = list.iterator();
-			while (pIter.hasNext()) {
-				Program p = pIter.next();
-			%>
-			<div class="program w-<%=p.getDurata()%>"><%=p.getName()%></div> <%
- }
- %>
-
-		</td>
-	</tr> --%>
 	
 	<script>
 	var dialog;
@@ -248,7 +233,3 @@
 	
 
 	</script>
-
-
-</body>
-</html>
