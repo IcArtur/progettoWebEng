@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page import="com.guida.Model.Utente"%>
-
+<%@ page import="java.sql.*" %>
 
 <c:set var="bodyContent">
 	<%
@@ -17,6 +17,7 @@
 		}
 	%>
 	<style type="text/css">@import url("/guidatv/css/admin.css");</style>
+	<style type="text/css">@import url("/guidatv/css/ricercaprogramma.css");</style>
 	<div align="center">
         <h1>Lista Programmi</h1>
         <div class="menu">
@@ -29,6 +30,55 @@
 	        <a href="/guidatv/admin/canale/list"><button type="button">Lista Canali</button></a>
         </div>
 	</div>
+	<form action="/guidatv/admin/programma/list" method="post">
+		<div class="filter">
+			<span>Titolo:</span>
+			<input type=text name="nome" value="<c:out value='${nome}' />" >
+		</div>
+		<div class="filter">
+			<span>Genere:</span>
+			<input type=text name="genere" value="<c:out value='${genere}' />">
+		</div>
+		<div class="filter">
+			<span>Ora inizio minimo:</span>
+			<input type="time" name="oramin" value="<c:out value='${oramin}' />">
+		</div>
+		<div class="filter">
+			<span>Ora inizio massimo:</span>
+			<input type="time" name="oramax" value="<c:out value='${oramax}' />">
+		</div>
+		<div class="filter">
+			<span>Dal:</span>
+			<input type="date" name="datamin" value="<c:out value='${datamin}' />">
+		</div>
+		<div class="filter">
+			<span>Al:</span>
+			<input type="date" name="datamax" value="<c:out value='${datamax}' />">
+		</div>
+		<div class="filter">
+			<span>Canale:</span>
+			<select name="id_canale">
+				<option value="">------</option>
+			<%
+					try {
+						Class.forName("com.mysql.jdbc.Driver");
+						Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/guidatv", "artur", "Arturho22");
+						Statement st = con.createStatement();
+						String query = "SELECT * FROM guidatv.canale";
+						ResultSet rs = st.executeQuery(query);
+						while (rs.next()) {
+							%>
+						<option value="<%=rs.getInt("id")%>" ><%=rs.getString("nome") %></option>
+						<%
+						}
+					} catch (Exception e) {
+						
+					} %>
+			</select>
+		</div>
+		
+		<input type="submit" value="Cerca" />
+	</form>
     <div align="center">
         <table border="1">
             <tr>

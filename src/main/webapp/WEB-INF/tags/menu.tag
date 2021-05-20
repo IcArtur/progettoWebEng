@@ -68,28 +68,8 @@
 						
            
           
-          <li><a class="drop" href="/guidatv/homepage.jsp">Homepage</a>
-            <ul>
-              <li><a href="pages/gallery.html">Non</a></li>
-              <li><a href="pages/full-width.html">Saprei</a></li>
-              <li><a href="pages/sidebar-left.html">Cosa</a></li>
-              <li><a href="pages/sidebar-right.html">Metterci</a></li>
-            </ul>
-          </li>
-          <li><a class="drop" href="/guidatv/programma/find">Ricerca Programma</a>
-            <ul>
-              <li><a href="#">Level 2</a></li>
-              <li><a class="drop" href="#">Level 2 + Drop</a>
-                <ul>
-                  <li><a href="#">Level 3</a></li>
-                  <li><a href="#">Level 3</a></li>
-                  <li><a href="#">Level 3</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Level 2</a></li>
-            </ul>
-          </li>
-          <li><a href="/guidatv/scheda/programma?id=22">Programma singolo</a></li>
+          <li><a href="/guidatv/homepage.jsp">Homepage</a> </li>
+          <li><a href="/guidatv/programma/find">Ricerca Programma</a></li>
           <li><a href="/guidatv/utente/profilo">Profilo</a></li>
         </ul>
         <!-- ################################################################################################ -->

@@ -57,7 +57,7 @@ public class ProgrammaDAO {
 			idProgram = rs.getLong("id");
 		}
 		else {
-			String query = "INSERT INTO guidatv.programma (nome, descrizione, genere, isTvShow, link_scheda, link_immagine) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+			String query = "INSERT INTO guidatv.programma (nome, descrizione, genere, isTvShow, link_scheda, link_immagine) VALUES (?, ?, ?, ?, ?, ?);";
 			PreparedStatement statement = jdbcConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			statement.setString (1, programma.getNome());
 			statement.setString (2, programma.getDescrizione());
@@ -82,9 +82,8 @@ public class ProgrammaDAO {
 		statement2.setInt (5, programma.getnumero_stagione());
 		statement2.setInt (6, programma.getnumero_episodio());
 		
-		statement2.toString();
 		boolean rowInserted = statement2.executeUpdate() > 0;
-		
+		disconnect();
         return rowInserted;
     }
      
@@ -368,9 +367,6 @@ public class ProgrammaDAO {
             Programma programma = new Programma(id, nome, descrizione, genere, link_scheda, link_immagine, isTvShow, numero_stagione, numero_episodio, id_canale, nome_canale, id_orario, data_inizio, data_fine);
             listFilter.add(programma);
     	}
-        
-         
-        disconnect();
         request.setAttribute("nome", request.getParameter("nome"));
         request.setAttribute("genere", request.getParameter("genere"));
         request.setAttribute("oramin", request.getParameter("oramin"));

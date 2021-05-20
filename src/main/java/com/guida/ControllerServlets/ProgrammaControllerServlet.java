@@ -82,7 +82,7 @@ public class ProgrammaControllerServlet extends HttpServlet {
  
     private void listProgramma(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<Programma> listProgramma = programmaDAO.listAllProgramma();
+    	List<Programma> listProgramma = programmaDAO.ricercaProgramma(request);
         request.setAttribute("listProgramma", listProgramma);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/listaprogramma.jsp");
         dispatcher.forward(request, response);
@@ -177,9 +177,19 @@ public class ProgrammaControllerServlet extends HttpServlet {
 		}
 		String link_scheda=request.getParameter("link_scheda");
 		String link_immagine=request.getParameter("link_immagine");
-		String String_data_inizio=request.getParameter("data_inizio").replace('T', ' ')+":00";
+		String String_data_inizio=request.getParameter("data_inizio").replace('T', ' ');
+		if (String_data_inizio.length() == 21) {
+			
+		} else {
+			String_data_inizio += ":00";
+		}
 		Timestamp data_inizio = Timestamp.valueOf(String_data_inizio);
-		String String_data_fine=request.getParameter("data_fine").replace('T', ' ')+":00";
+		String String_data_fine=request.getParameter("data_fine").replace('T', ' ');
+		if (String_data_fine.length() == 21) {
+			
+		} else {
+			String_data_fine += ":00";
+		}
 		Timestamp data_fine = Timestamp.valueOf(String_data_fine);
 		int id_canale=Integer.parseInt(request.getParameter("id_canale"));
 		int id_orario=Integer.parseInt(request.getParameter("id_orario"));

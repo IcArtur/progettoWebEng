@@ -10,6 +10,7 @@
 
 <c:set var="bodyContent">
 	<%
+		String kappa = request.getRequestURL().toString();
 		Utente utente = (Utente) session.getAttribute("utente");
 		if(utente == null){
 			response.sendRedirect("/guidatv/login.html");
@@ -34,7 +35,7 @@
 	</div>
 	<div align="center">
 		<c:choose>
-			<c:when test="${programma != null && programma.isTvShow == false}">
+			<c:when test="${programma != null}">
 				<form action="update" method="post">
 			</c:when>
 			<c:otherwise>
@@ -83,8 +84,13 @@
 			</tr>
 			<tr>
 				<th>E' una serie TV?</th>
-				<td><input type="checkbox" name="isTvShow" size="45"
-					checked="<c:out value='${programma.isTvShow}' />" /></td>
+				<td><input type="checkbox" name="isTvShow" size="45" 
+				<c:choose>
+					<c:when test="${programma.isTvShow == true}">
+						checked="true"
+					</c:when>
+				</c:choose>
+				 ></td>
 			</tr>
 			<tr>
 				<th>Numero stagione:</th>
