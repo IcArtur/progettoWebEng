@@ -97,19 +97,11 @@ html, body, div, p {
 .p {
 	height: 100%;
 	float: left;
-	
-}
-
-.p>p {
-	height: 80%;
-	border-right: 1px solid #999;
-	padding: 10px;
+	border: 2px solid white!important;
+	border-radius: 16px;
 	text-align: center;
-}
-
-.p>p:hover {
-	border: 2px solid orange;
-	height: 76%
+	padding: 10px;
+	word-wrap: break-word;
 }
 
 

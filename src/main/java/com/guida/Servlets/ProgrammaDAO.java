@@ -136,7 +136,7 @@ public class ProgrammaDAO {
 	        		+ "join programma p on p.id = op.id_programma "
 	        		+ "join canale c on c.id = op.id_canale "
 	        		+ "WHERE op.id_programma = ?"
-	        		+ " AND op.data_inizio > CURRENT_TIMESTAMP() "
+	        		+ " AND op.data_fine > CURRENT_TIMESTAMP() "
 	        		+ " ORDER by op.data_inizio";
         connect();
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
