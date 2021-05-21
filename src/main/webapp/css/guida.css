@@ -40,7 +40,6 @@ html, body, div, p {
 
 .program {
 	position: relative;
-	width: calc(var(--hw)* 25.5);
 	padding-left: var(--channelswidth);
 }
 
@@ -117,34 +116,6 @@ html, body, div, p {
 
 .h60 {
 	width: var(--hw);
-}
-.h30 {
-	width: calc(var(--hw)* 0.5);
-}
-
-.h90 {
-	width: calc(var(--hw)* 1.5);
-}
-
-.h120 {
-	width: calc(var(--hw)* 2);
-}
-
-.h150 {
-	width: calc(var(--hw)* 2.5);
-}
-
-
-.h180 {
-	width: calc(var(--hw)* 3);
-}
-
-.h210 {
-	width: calc(var(--hw)* 3.5);
-}
-
-.h240 {
-	width: calc(var(--hw)* 4);
 }
 
 .dialog {

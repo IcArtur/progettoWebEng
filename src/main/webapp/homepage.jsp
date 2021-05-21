@@ -41,31 +41,61 @@
 <%
 Map<Canale, List<Programma>> programs = new HashMap<>();
 
-String sql = "select op.*,p.*, c.*, "
-		+ "TIMESTAMPDIFF (MINUTE, op.data_inizio, op.data_fine) as durata "
-		+ "from orari_programma as op "
-		+ "join programma p on p.id = op.id_programma " 
-		+ "join canale c on c.id = op.id_canale "
-		+ "where date(op.data_inizio) = DATE(?) "
-		+ "ORDER by op.id_canale";
+String day =  (String) request.getAttribute("data_calendario");
+String today = java.time.LocalDate.now().toString();
+String now = java.time.LocalDateTime.now().toString();
+LocalTime midnight = LocalTime.MIDNIGHT;
+LocalDate tdy = LocalDate.now(ZoneId.of("Europe/Berlin")).plusDays(1);
+String todayMidnight = LocalDateTime.of(tdy, midnight).toString();
+Integer hour = 0;
+String sql = "";
 Class.forName("com.mysql.jdbc.Driver");
 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/guidatv", "artur", "Arturho22");
-PreparedStatement statement = con.prepareStatement(sql);
-String data =  (String) request.getAttribute("data_calendario");
-if (data == null)
-{
-	data = java.time.LocalDate.now().toString();
+PreparedStatement statement;
+Calendar calendar = Calendar.getInstance();
+java.util.Date oggi = new java.util.Date();
+calendar.setTime(oggi);
+if (day == null) {
+	day = today;
 }
-statement.setString(1, data);
+if (day.equals(today)) {
+	hour = calendar.get(Calendar.HOUR_OF_DAY);
+	sql = 	"select op.*,p.*, c.*, "
+			+ "TIMESTAMPDIFF (MINUTE, op.data_inizio, op.data_fine) as durata "
+			+ "from orari_programma as op "
+			+ "join programma p on p.id = op.id_programma " 
+			+ "join canale c on c.id = op.id_canale "
+			+ "where date(op.data_inizio) = DATE(?) "
+			+ "and timestamp(op.data_fine) > timestamp(?) "
+			+ "and timestamp(op.data_inizio) < timestamp(?) "
+			+ "ORDER by op.data_inizio";
+	statement = con.prepareStatement(sql);
+	statement.setString(1, day);
+	statement.setString(2, now);
+	statement.setString(3, todayMidnight);
+}
+else {
+	hour = 0;
+	sql = "select op.*,p.*, c.*, "
+			+ "TIMESTAMPDIFF (MINUTE, op.data_inizio, op.data_fine) as durata "
+			+ "from orari_programma as op "
+			+ "join programma p on p.id = op.id_programma " 
+			+ "join canale c on c.id = op.id_canale "
+			+ "where date(op.data_inizio) = DATE(?) "
+			+ "ORDER by op.data_inizio";
+	statement = con.prepareStatement(sql);
+	statement.setString(1, day);
+}
+double hours_remaning = 26.3 - hour;
+
+
+
 ResultSet rs = statement.executeQuery();
 
 
 while (rs.next()) {
 
-	Canale canale = new Canale();
-	canale.setId(rs.getInt("id_canale"));
-	canale.setNome(rs.getString("c.nome"));
-	canale.setImmagine(rs.getString("c.immagine"));
+	Canale canale = new Canale(rs.getInt("id_canale"), rs.getString("c.nome"),rs.getString("c.immagine"));
 
 	List<Programma> list = programs.getOrDefault(canale, new ArrayList<Programma>());
 
@@ -109,24 +139,16 @@ while (rs.next()) {
 		</div>
 		<!-- end channels -->
 
-		<div class="program">
+		<div class="program" style="width: calc(var(--hw)* <%=hours_remaning %>);">
 			<div class="hours">
 				<%
-				String day =  (String) request.getAttribute("data_calendario");
-				String today = java.time.LocalDate.now().toString();
-				if (day == null  || day.equals(today)) {
-					Calendar calendar = GregorianCalendar.getInstance();
-					java.util.Date oggi = new java.util.Date();
-					calendar.setTime(oggi);
-					Integer hour = calendar.get(Calendar.HOUR_OF_DAY);
-					while (hour <= 24) {
-						%>
-						<div class="h">
-						<p><%=hour%>.00</p>
-						</div>
-						<%
-						hour = hour + 1;
-					}
+				while (hour <= 24) {
+					%>
+					<div class="h">
+					<p><%=hour%>.00</p>
+					</div>
+					<%
+					hour = hour + 1;
 				}
 				%>
 			</div>
@@ -146,8 +168,16 @@ while (rs.next()) {
 			Iterator<Programma> pIter = list.iterator();
 			while (pIter.hasNext()) {
 				Programma program = pIter.next();
+				Timestamp data_inizio1 = program.getdata_inizio();
+				Timestamp built_timestamp = Timestamp.valueOf(String.format("%d-%d-%d %d:00:00", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY)));  
+				if(data_inizio1.before(built_timestamp) && day.equals(today)) {
+					long diffInMS =  program.getdata_fine().getTime() - built_timestamp.getTime();
+					int diffInMin = (int) diffInMS / 60000;
+					program.setDurata(diffInMin);
+					
+				}
 			%>
-				<div class="p h<%= program.getDurata() %>" onclick="showDetails('<%= channel.getId() %>', '<%= program.getNome() %>', '<%= program.getDescrizione()%>')">
+				<div class="p" style="width: calc(var(--hw)* <%= ((float)program.getDurata())/60 %>);" onclick="showDetails('<%= channel.getId() %>', '<%= program.getNome() %>', '<%= program.getDescrizione()%>')">
 					<p>
 						<%= program.getNome() %>
 					</p>
