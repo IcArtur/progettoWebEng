@@ -161,16 +161,24 @@ while (rs.next()) {
 			<%
 			Iterator<Programma> pIter = list.iterator();
 			Timestamp built_timestamp=new Timestamp(System.currentTimeMillis());
+			Timestamp last_timestamp= built_timestamp;
+			float margin_css = 0;
+			
 			while (pIter.hasNext()) {
 				Programma program = pIter.next();
 				Timestamp data_inizio1 = program.getdata_inizio();
 				if (day.equals(today)) {
-					
+					if (last_timestamp.equals(built_timestamp)) {
+						last_timestamp = Timestamp.valueOf(String.format("%d-%d-%d %d:00:00", calendar.get(Calendar.YEAR), 
+								calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY)));
+					}
 					built_timestamp = Timestamp.valueOf(String.format("%d-%d-%d %d:00:00", calendar.get(Calendar.YEAR), 
 							calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY)));
 				} else {
-					
 					String day_mod = day + " 00:00:00";
+					if (last_timestamp == built_timestamp) {
+						last_timestamp = Timestamp.valueOf(day_mod);
+					}
 					built_timestamp = Timestamp.valueOf(day_mod);
 				}
 				if(data_inizio1.before(built_timestamp)) {
@@ -178,9 +186,15 @@ while (rs.next()) {
 					int diffInMin = (int) diffInMS / 60000;
 					program.setDurata(diffInMin);
 				}
+				
+				if (last_timestamp.before(program.getdata_inizio())) {
+					long diffInMS2 =  program.getdata_inizio().getTime() - last_timestamp.getTime();
+					margin_css = (float) diffInMS2 / 3600000;
+				}
+				last_timestamp = program.getdata_fine();
 			%>
 				<a href="/guidatv/scheda/programma?id=<%= program.getId() %>">
-				<div class="p" style="width: calc(var(--hw)* <%= ((float)program.getDurata())/60 %>);" onclick="showDetails('<%= channel.getId() %>', '<%= program.getNome() %>', '<%= program.getDescrizione()%>')">
+				<div class="p" style="width: calc(var(--hw)* <%= ((float)program.getDurata())/60 %>);margin-left:calc(var(--hw)*<%= margin_css %>);">
 					<p>
 						<%= program.getNome() %>
 					</p>
