@@ -80,7 +80,7 @@ else {
 	statement.setString(1, modif_day1);
 	statement.setString(2, modif_day2);
 }
-double hours_remaning = 26.3 - hour;
+double hours_remaning = 25.3 - hour;
 
 
 
@@ -136,7 +136,7 @@ while (rs.next()) {
 		<div class="program" style="width: calc(var(--hw)* <%=hours_remaning %>);">
 			<div class="hours">
 				<%
-				while (hour <= 24) {
+				while (hour <= 23) {
 					%>
 					<div class="h">
 					<p><%=hour%>.00</p>
@@ -167,6 +167,7 @@ while (rs.next()) {
 			while (pIter.hasNext()) {
 				Programma program = pIter.next();
 				Timestamp data_inizio1 = program.getdata_inizio();
+				Timestamp mezzanotte = Timestamp.valueOf(day + " 24:00:00");
 				if (day.equals(today)) {
 					if (last_timestamp.equals(built_timestamp)) {
 						last_timestamp = Timestamp.valueOf(String.format("%d-%d-%d %d:00:00", calendar.get(Calendar.YEAR), 
@@ -187,9 +188,14 @@ while (rs.next()) {
 					program.setDurata(diffInMin);
 				}
 				
-				if (last_timestamp.before(program.getdata_inizio())) {
-					long diffInMS2 =  program.getdata_inizio().getTime() - last_timestamp.getTime();
+				if (last_timestamp.before(data_inizio1)) {
+					long diffInMS2 =  data_inizio1.getTime() - last_timestamp.getTime();
 					margin_css = (float) diffInMS2 / 3600000;
+				}
+				if (program.getdata_fine().after(mezzanotte)) {
+					long diffInMS3 =  mezzanotte.getTime() - data_inizio1.getTime();
+					int diffInMin3 = (int) diffInMS3 / 60000;
+					program.setDurata(diffInMin3);
 				}
 				last_timestamp = program.getdata_fine();
 			%>
